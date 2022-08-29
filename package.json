@@ -1,0 +1,21 @@
+{
+  "name": "ethr-revocation-list-registry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "truffle test",
+    "test:coverage": "truffle run coverage",
+    "compile": "truffle compile",
+    "deploy": "truffle deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "solhint": "^3.3.7",
+    "solidity-coverage": "^0.7.21"
+  }
+}
