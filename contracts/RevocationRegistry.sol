@@ -8,9 +8,9 @@ contract RevocationRegistry {
     // New Owners: Incase an owner has changed the owner of one of the lists in its namespaces
     // Acts as a lookup table of what addresses have delegate access to what revocation list in which namespaces
     //(hash(ownerNamespace,list,version) => newOwner => bool
-    mapping(bytes32 => mapping(address => bool)) newOwners;
+    mapping(bytes32 => address) public newOwners;
 
-    // Delegates: A namespacer owner can add access to one of its lists to another namespace/ address
+    // Delegates: A namespace owner can add access to one of its lists to another namespace/ address
     // Acts as a lookup table of what addresses have delegate access to what revocation list in which namespaces
     //     (hash(ownerNamespace, list) => newOwner => expiryTiemstamp
     mapping(bytes32 => mapping(address => uint)) delegates;
@@ -26,7 +26,6 @@ contract RevocationRegistry {
 
     function changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isOwner(namespace, list) public {
         registry[namespace][list][revocationKey] = revoked;
-        // emit Event
     }
 
     function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
@@ -41,9 +40,7 @@ contract RevocationRegistry {
 
     function changeListOwner(address namespace, address newOwner, bytes32 list) isOwner(namespace, list) public {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        // Remove current owner (caller) and set new one
-        newOwners[listLocationHash][msg.sender] = false;
-        newOwners[listLocationHash][newOwner] = true;
+        newOwners[listLocationHash] = newOwner;
     }
 
     function addListDelegate(address namespace, address delegate, bytes32 list, uint validity) isOwner(namespace, list) public {
@@ -63,13 +60,16 @@ contract RevocationRegistry {
         return keccak256(abi.encodePacked(namespace, list, version));
     }
 
+
     // Check if
     // - caller is acting in its namespace
     // - or they got owner rights in a foreign namespace
     modifier isOwner(address namespace, bytes32 list) {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        if (!newOwners[listLocationHash][msg.sender]) {
+        if (newOwners[listLocationHash] == address(0)) {
             require(msg.sender == namespace, "Caller is not an owner");
+        } else {
+            require(msg.sender == newOwners[listLocationHash], "Caller is not an owner");
         }
         _;
     }
