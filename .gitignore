@@ -1,5 +1,6 @@
 node_modules
 migrations
+development/
 .idea
 build
 types
