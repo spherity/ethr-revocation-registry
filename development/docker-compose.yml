@@ -1,16 +1,9 @@
-node:
-  image: trufflesuite/ganache-cli:latest
-  ports:
-    - "8545:8545"
-  entrypoint:
-    - node
-    - /app/ganache-core.docker.cli.js
-    - --deterministic
-    - --db=/ganache_data
-    - --mnemonic
-    - 'minimum symptom minute gloom tragic situate silver mechanic salad amused elite beef'
-    - --networkId
-    - '5777'
-    - --hostname
-    - '0.0.0.0'
-    - --debug
+version: "3.8"
+
+services:
+  ganache:
+    image: trufflesuite/ganache:latest
+    ports:
+      - "8545:8545"
+    command:
+      --port 8545 --chain.networkId 5777 --logging.verbose
