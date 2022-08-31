@@ -1,7 +1,6 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 import {
-  addListDelegate, assertForNegativeRevocation,
-  assertForPositiveRevocation,
+  addListDelegate,
   changeListOwner,
   removeListDelegate,
   revokeKey,
@@ -50,7 +49,6 @@ contract("RevocationRegistry", async (accounts) => {
         }
         assert.isFalse(true)
       } catch (error: any) {
-        const s = error;
         assert.include(error.message, "Caller is not an owner")
       }
     });
