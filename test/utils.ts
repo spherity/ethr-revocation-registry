@@ -18,6 +18,10 @@ export async function unrevokeKey(registry: RevocationRegistryInstance, namespac
   return registry.changeStatus.sendTransaction(false, namespace, list, revocationKey, {from: account});
 }
 
+export async function changeStatusesInList(registry: RevocationRegistryInstance, revoked: boolean[], namespace: string, list: string, revocationKeys: string[], account: string) {
+  return registry.changeStatusesInList.sendTransaction(revoked, namespace, list, revocationKeys, {from: account});
+}
+
 export async function changeListOwner(registry: RevocationRegistryInstance, namespace: string, newOwner: string, list: string, account: string) {
   return registry.changeListOwner.sendTransaction(namespace, newOwner, list, {from: account});
 }
@@ -36,9 +40,4 @@ export async function revokeKeyDelegated(registry: RevocationRegistryInstance, n
 
 export async function unrevokeKeyDelegated(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {
   return registry.changeStatusDelegated.sendTransaction(false, namespace, list, revocationKey, {from: account});
-}
-
-
-export async function sleep(milliseconds: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds))
 }

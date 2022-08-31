@@ -1,5 +1,12 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
-import {addListDelegate, changeListOwner, removeListDelegate, revokeKey, revokeKeyDelegated, sleep} from "./utils";
+import {
+  addListDelegate, assertForNegativeRevocation,
+  assertForPositiveRevocation,
+  changeListOwner,
+  removeListDelegate,
+  revokeKey,
+  revokeKeyDelegated, unrevokeKey
+} from "./utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
@@ -24,8 +31,30 @@ contract("RevocationRegistry", async (accounts) => {
         assert.include(error.message, "Caller is not an owner")
       }
     })
-  })
 
+    it("if unauthorized account trys to bulk (un-)revoke keys", async function () {
+      const revocations = {
+        [web3.utils.keccak256("revocationKey1")]: true,
+        [web3.utils.keccak256("revocationKey2")]: false,
+        [web3.utils.keccak256("revocationKey3")]: false,
+        [web3.utils.keccak256("revocationKey4")]: true,
+      }
+
+      try {
+        for (const [revocationKey, revoke] of Object.entries(revocations)) {
+          if (revoke) {
+            await revokeKey(registry, bobsAcc, list, revocationKey, aliceAcc);
+          } else {
+            await unrevokeKey(registry, bobsAcc, list, revocationKey, aliceAcc);
+          }
+        }
+        assert.isFalse(true)
+      } catch (error: any) {
+        const s = error;
+        assert.include(error.message, "Caller is not an owner")
+      }
+    });
+  })
 
   contract("should fail revocation (owner change)", async () => {
     it("if original owner try to revoke a key after an owner change", async () => {

@@ -5,6 +5,7 @@ const RevocationRegistry = artifacts.require("RevocationRegistry");
 
 contract("RevocationRegistry", function (accounts) {
   let registry: RevocationRegistryInstance;
+  const bobsAcc = accounts[0]
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628";
   const revocationKey = "0x89343794d2fb7dd5d0fba9593a4bb13beaff93a61577029176d0117b0c53b8e6";
   beforeEach(async () => {
@@ -28,24 +29,45 @@ contract("RevocationRegistry", function (accounts) {
 
   contract("[scoped state]", async function () {
     it("setting positive revocation state", async function () {
-      await revokeKey(registry, accounts[0], list, revocationKey, accounts[0]);
-      await assertForPositiveRevocation(registry, accounts[0], list, revocationKey);
+      await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+      await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
     });
   });
 
   contract("[scoped state]", async function () {
     it("setting positive & negative revocation state", async function () {
-      await revokeKey(registry, accounts[0], list, revocationKey, accounts[0]);
-      await assertForPositiveRevocation(registry, accounts[0], list, revocationKey);
-      await unrevokeKey(registry, accounts[0], list, revocationKey, accounts[0]);
-      await assertForNegativeRevocation(registry, accounts[0], list, revocationKey);
+      await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+      await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+      await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+      await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
     });
   });
 
   contract("[scoped state]", async function () {
     it("setting negative revocation without change", async function () {
-      await unrevokeKey(registry, accounts[0], list, revocationKey, accounts[0]);
-      await assertForNegativeRevocation(registry, accounts[0], list, revocationKey);
+      await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+      await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
+    });
+  });
+
+  contract("[scoped state]", async function () {
+    it("bulk (un-)revoke keys in a namespace's list", async function () {
+      const revocations = {
+        [web3.utils.keccak256("revocationKey1")]: true,
+        [web3.utils.keccak256("revocationKey2")]: false,
+        [web3.utils.keccak256("revocationKey3")]: false,
+        [web3.utils.keccak256("revocationKey4")]: true,
+      }
+
+      for (const [revocationKey, revoke] of Object.entries(revocations)) {
+        if (revoke) {
+          await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+          await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+        } else {
+          await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+          await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
+        }
+      }
     });
   });
 });
