@@ -8,14 +8,14 @@ contract RevocationRegistry is EIP712 {
     // Revocations happen in revocation lists that belong to an address/ user namespace
     mapping(address => mapping(bytes32 => mapping(bytes32 => bool))) registry;
 
-    // New Owners: Incase an owner has changed the owner of one of the lists in its namespaces
+    // New Owners: In case an owner has changed the owner of one of the lists in its namespaces
     // Acts as a lookup table of what addresses have delegate access to what revocation list in which namespaces
-    //(hash(ownerNamespace,list,version) => newOwner => bool
-    mapping(bytes32 => mapping(address => bool)) newOwners;
+    //(hash(ownerNamespace,list) => newOwner
+    mapping(bytes32 => address) public newOwners;
 
-    // Delegates: A namespacer owner can add access to one of its lists to another namespace/ address
+    // Delegates: A namespace owner can add access to one of its lists to another namespace/ address
     // Acts as a lookup table of what addresses have delegate access to what revocation list in which namespaces
-    //     (hash(ownerNamespace, list) => newOwner => expiryTiemstamp
+    //     (hash(ownerNamespace, list) => newOwner => expiryTimestamp
     mapping(bytes32 => mapping(address => uint)) delegates;
 
     // Nonce tracking for meta transactions
@@ -78,8 +78,7 @@ contract RevocationRegistry is EIP712 {
     function changeListOwner(address namespace, address newOwner, bytes32 list) isOwner(namespace, list) public {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         // Remove current owner (caller) and set new one
-        newOwners[listLocationHash][msg.sender] = false;
-        newOwners[listLocationHash][newOwner] = true;
+        newOwners[listLocationHash] = newOwner;
     }
 
     function addListDelegate(address namespace, address delegate, bytes32 list, uint validity) isOwner(namespace, list) public {
@@ -106,10 +105,12 @@ contract RevocationRegistry is EIP712 {
     // - or they got owner rights in a foreign namespace
     function _identityIsOwner(address namespace, bytes32 list, address identity) view internal returns(bool) {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        if (!newOwners[listLocationHash][identity]) {
-            return false;
+        if (newOwners[listLocationHash] == address(0) && identity == namespace) {
+            return true;
+        } else if (newOwners[listLocationHash] == identity) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     modifier isDelegate(address namespace, bytes32 list) {
