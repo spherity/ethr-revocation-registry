@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-contract RevocationRegistry {
+import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+
+contract RevocationRegistry is EIP712, ChangeStatus {
     // Revocations happen in revocation lists that belong to an address/ user namespace
     mapping(address => mapping(bytes32 => mapping(bytes32 => bool))) registry;
 
@@ -18,15 +21,38 @@ contract RevocationRegistry {
     // Nonce tracking for meta transactions
     mapping(address => uint) nonces;
 
-    constructor() {}
+    constructor()
+    EIP712("Revocation-Registry", "1.0.0") {}
 
     function isRevoked(address namespace, bytes32 list, bytes32 revocationKey) public view returns (bool) {
         return (registry[namespace][list][revocationKey]);
     }
 
     function changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isOwner(namespace, list) public {
+        _changeStatus(revoked, namespace, list, revocationKey);
+    }
+
+    function _changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
         registry[namespace][list][revocationKey] = revoked;
         // emit Event
+    }
+
+    function changeStatusSigned(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, bytes calldata signature) public {
+        bytes32 hash = _hashChangeStatus(revoked, namespace, list, revocationKey);
+        address signer = ECDSA.recover(hash, signature);
+        require(identityIsOwner(namespace, list, signer), "Signer is not an owner");
+        nonces[signer]++;
+        _changeStatus(revoked, namespace, list, revocationKey);
+    }
+
+    function _hashChangeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("ChangeStatus(bool revoked,address namespace,bytes32 list,bytes32 key)"),
+                revoked,
+                namespace,
+                list,
+                key
+            )));
     }
 
     function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
@@ -63,21 +89,33 @@ contract RevocationRegistry {
         return keccak256(abi.encodePacked(namespace, list, version));
     }
 
-    // Check if
-    // - caller is acting in its namespace
-    // - or they got owner rights in a foreign namespace
     modifier isOwner(address namespace, bytes32 list) {
+        require(_identityIsOwner(namespace, list, msg.sender), "Caller is not an owner");
+        _;
+    }
+
+    // Check if:
+    // - identity that is supplied is acting in its namespace
+    // - or they got owner rights in a foreign namespace
+    function _identityIsOwner(address namespace, bytes32 list, address identity) pure internal returns(bool) {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        if (!newOwners[listLocationHash][msg.sender]) {
-            require(msg.sender == namespace, "Caller is not an owner");
+        if (!newOwners[listLocationHash][identity]) {
+            return false;
         }
+        return true;
+    }
+
+    modifier isDelegate(address namespace, bytes32 list) {
+        require(_identityIsDelegate(namespace, list, msg.sender), "Caller is not a delegate");
         _;
     }
 
     // Check if caller got delegate rights in a foreign namespace before expiry
-    modifier isDelegate(address namespace, bytes32 list) {
+    function _identityIsDelegate(address namespace, bytes32 list, address identity) pure internal returns(bool) {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        require(delegates[listLocationHash][msg.sender] > block.timestamp, "Caller is not a delegate");
-        _;
+        if(delegates[listLocationHash][identity] > block.timestamp) {
+            return true;
+        }
+        return false;
     }
 }

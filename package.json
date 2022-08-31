@@ -35,6 +35,7 @@
     "web3-utils": "^1"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
     "ts-node": "^10.9.1"
   }
 }
