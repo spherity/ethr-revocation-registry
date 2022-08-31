@@ -1,5 +1,7 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 
+// TODO: Let's discuss if we really want to have separate cases / fncts for revoke/ unrevoke
+
 export async function assertForNegativeRevocation(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string) {
   assert.isFalse(await registry.isRevoked(namespace, list, revocationKey));
 }
@@ -19,6 +21,23 @@ export async function unrevokeKey(registry: RevocationRegistryInstance, namespac
 export async function changeListOwner(registry: RevocationRegistryInstance, namespace: string, newOwner: string, list: string, account: string) {
   return registry.changeListOwner.sendTransaction(namespace, newOwner, list, {from: account});
 }
+
+export async function addListDelegate(registry: RevocationRegistryInstance, namespace: string, delegate: string, list: string, validity: number, account: string) {
+  return registry.addListDelegate.sendTransaction(namespace, delegate, list, validity, {from: account});
+}
+
+export async function removeListDelegate(registry: RevocationRegistryInstance, namespace: string, delegate: string, list: string, account: string) {
+  return registry.removeListDelegate.sendTransaction(namespace, delegate, list, {from: account});
+}
+
+export async function revokeKeyDelegated(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {
+  return registry.changeStatusDelegated.sendTransaction(true, namespace, list, revocationKey, {from: account});
+}
+
+export async function unrevokeKeyDelegated(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {
+  return registry.changeStatusDelegated.sendTransaction(false, namespace, list, revocationKey, {from: account});
+}
+
 
 export async function sleep(milliseconds: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, milliseconds))
