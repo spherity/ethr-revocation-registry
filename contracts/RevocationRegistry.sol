@@ -37,13 +37,16 @@ contract RevocationRegistry is EIP712 {
         return (registry[namespace][list][revocationKey]);
     }
 
-    function changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isOwner(namespace, list) public {
-        _changeStatus(revoked, namespace, list, revocationKey);
-    }
+    // CHANGE STATUS
+    //    BY OWNER
 
     function _changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
         registry[namespace][list][revocationKey] = revoked;
         // emit Event
+    }
+
+    function changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isOwner(namespace, list) public {
+        _changeStatus(revoked, namespace, list, revocationKey);
     }
 
     // TODO: rename `signed` suffix to something more self explanatory? Like `meta` maybe?
@@ -65,31 +68,172 @@ contract RevocationRegistry is EIP712 {
             )));
     }
 
-    function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
-        for (uint i = 0; i < revoked.length; i++) {
-            changeStatus(revoked[i], namespace, list, revocationKeys[i]);
-        }
-    }
-
-    function changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isDelegate(namespace, list) public {
+    //    BY DELEGATE
+    function _changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
         registry[namespace][list][revocationKey] = revoked;
     }
 
-    function changeListOwner(address namespace, address newOwner, bytes32 list) isOwner(namespace, list) public {
+    function changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isDelegate(namespace, list) public {
+        _changeStatusDelegated(revoked, namespace, list, revocationKey);
+    }
+
+    function changeStatusDelegatedSigned(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, bytes calldata signature) public {
+        bytes32 hash = _hashChangeStatusDelegated(revoked, namespace, list, revocationKey);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsDelegate(namespace, list, signer), "Signer is not a delegate");
+        nonces[signer]++;
+        _changeStatusDelegated(revoked, namespace, list, revocationKey);
+    }
+
+    function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("ChangeStatusDelegated(bool revoked,address namespace,bytes32 list,bytes32 revocationKey)"),
+                revoked,
+                namespace,
+                list,
+                revocationKey
+            )));
+    }
+
+    // CHANGE OWNER BATCH
+    //    BY OWNER
+    function _changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal {
+        for (uint i = 0; i < revoked.length; i++) {
+            _changeStatus(revoked[i], namespace, list, revocationKeys[i]);
+        }
+    }
+
+    function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
+        _changeStatusesInList(revoked, namespace, list, revocationKeys);
+    }
+
+    function changeStatusesInListSigned(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys, bytes calldata signature) public {
+        bytes32 hash = _hashChangeStatusesInList(revoked, namespace, list, revocationKeys);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsOwner(namespace, list, signer), "Signer is not an owner");
+        nonces[signer]++;
+        _changeStatusesInList(revoked, namespace, list, revocationKeys);
+    }
+
+    function _hashChangeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("ChangeStatusesInList(bool[] revoked,address namespace,bytes32 list,bytes32[] revocationKeys)"),
+                revoked,
+                namespace,
+                list,
+                revocationKeys
+            )));
+    }
+
+    //    BY DELEGATE
+    function changeStatusesInListDelegate(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isDelegate(namespace, list) public {
+        _changeStatusesInList(revoked, namespace, list, revocationKeys);
+    }
+
+    function changeStatusesInListDelegateSigned(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys, bytes calldata signature) public {
+        bytes32 hash = _hashChangeStatusesInListDelegate(revoked, namespace, list, revocationKeys);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsDelegate(namespace, list, signer), "Signer is not a delegate");
+        nonces[signer]++;
+        _changeStatusesInList(revoked, namespace, list, revocationKeys);
+    }
+
+    function _hashChangeStatusesInListDelegate(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("ChangeStatusesInListDelegate(bool[] revoked,address namespace,bytes32 list,bytes32[] revocationKeys)"),
+                revoked,
+                namespace,
+                list,
+                revocationKeys
+            )));
+    }
+
+    // OWNER
+
+    function _changeListOwner(address namespace, address newOwner, bytes32 list) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
-        // Remove current owner (caller) and set new one
         newOwners[listLocationHash] = newOwner;
     }
 
-    function addListDelegate(address namespace, address delegate, bytes32 list, uint validity) isOwner(namespace, list) public {
+    function changeListOwner(address namespace, address newOwner, bytes32 list) isOwner(namespace, list) public {
+        _changeListOwner(namespace, newOwner, list);
+    }
+
+    function changeListOwnerSigned(address namespace, address newOwner, bytes32 list, bytes calldata signature) public {
+        bytes32 hash = _hashChangeListOwner(namespace, newOwner, list);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsOwner(namespace, list, signer), "Signer is not an owner");
+        nonces[signer]++;
+        _changeListOwner(namespace, newOwner, list);
+    }
+
+    function _hashChangeListOwner(address namespace, address newOwner, bytes32 list) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("ChangeListOwner(address namespace,address newOwner,bytes32 list)"),
+                namespace,
+                newOwner,
+                list
+            )));
+    }
+
+    // DELEGATES
+    //    ADD
+
+    function _addListDelegate(address namespace, address delegate, bytes32 list, uint validity) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         delegates[listLocationHash][delegate] = validity;
     }
 
-    function removeListDelegate(address namespace, address delegate, bytes32 list) isOwner(namespace, list) public {
+    function addListDelegate(address namespace, address delegate, bytes32 list, uint validity) isOwner(namespace, list) public {
+        _addListDelegate(namespace, delegate, list, validity);
+    }
+
+    function addListDelegateSigned(address namespace, address delegate, bytes32 list, uint validity, bytes calldata signature) public {
+        bytes32 hash = _hashAddListDelegate(namespace, delegate, list, validity);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsOwner(namespace, list, signer), "Signer is not an owner");
+        nonces[signer]++;
+        _addListDelegate(namespace, delegate, list, validity);
+    }
+
+    function _hashAddListDelegate(address namespace, address delegate, bytes32 list, uint validity) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("AddListDelegate(address namespace,address delegate,bytes32 list,uint validity)"),
+                namespace,
+                delegate,
+                list,
+                validity
+            )));
+    }
+
+    //    REMOVE
+    function _removeListDelegate(address namespace, address delegate, bytes32 list) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         delegates[listLocationHash][delegate] = 0;
     }
+
+    function removeListDelegate(address namespace, address delegate, bytes32 list) isOwner(namespace, list) public {
+        _removeListDelegate(namespace, delegate, list);
+    }
+
+    function removeListDelegateSigned(address namespace, address delegate, bytes32 list, bytes calldata signature) public {
+        bytes32 hash = _hashRemoveListDelegate(namespace, delegate, list);
+        address signer = ECDSA.recover(hash, signature);
+        require(_identityIsOwner(namespace, list, signer), "Signer is not an owner");
+        nonces[signer]++;
+        _removeListDelegate(namespace, delegate, list);
+    }
+    // TODO: should this be public?
+    function _hashRemoveListDelegate(address namespace, address delegate, bytes32 list) view public returns(bytes32) {
+        return _hashTypedDataV4(keccak256(abi.encode(
+                keccak256("RemoveListDelegate(address namespace,address delegate,bytes32 list)"),
+                namespace,
+                delegate,
+                list
+            )));
+    }
+
+    // MISC
 
     function generateListLocationHash(address namespace, bytes32 list) pure internal returns(bytes32) {
         return keccak256(abi.encodePacked(namespace, list));
