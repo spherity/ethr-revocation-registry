@@ -1,6 +1,6 @@
 {
   "name": "ethr-revocation-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
   "scripts": {
     "init": "docker-compose -f development/docker-compose.yml up -d",
@@ -18,18 +18,18 @@
     "url": "git+https://github.com/spherity/Ethereum-Revocation-Registry.git"
   },
   "author": {
-    "name" : "Dennis von der Bey",
-    "email" : "dennis@vonderbey.eu",
-    "url" : "https://www.vonderbey.eu"
+    "name": "Dennis von der Bey",
+    "email": "dennis@vonderbey.eu",
+    "url": "https://www.vonderbey.eu"
   },
   "contributors": [
     {
-      "name" : "Philipp Bolte",
-      "email" : "philipp.bolte@spherity.com"
+      "name": "Philipp Bolte",
+      "email": "philipp.bolte@spherity.com"
     },
     {
-      "name" : "Lauritz Leifermann",
-      "email" : "lauritz.leifermann@spherity.com"
+      "name": "Lauritz Leifermann",
+      "email": "lauritz.leifermann@spherity.com"
     }
   ],
   "bugs": {
@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
+    "ethers": "^5.7.0",
     "ts-node": "^10.9.1"
   }
 }
