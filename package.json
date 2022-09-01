@@ -1,11 +1,7 @@
 {
-  "name": "ethr-revocation-list-registry",
+  "name": "ethr-revocation-list",
   "version": "1.0.0",
-  "description": "",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
+  "description": "The Ethereum Revocation List types for smart contract interaction.",
   "scripts": {
     "init": "docker-compose -f development/docker-compose.yml up -d",
     "generate-types": "truffle compile && typechain --target=truffle-v5 'build/contracts/*.json'",
@@ -17,8 +13,30 @@
     "compile": "truffle compile",
     "deploy": "truffle deploy"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/spherity/Ethereum-Revocation-Registry.git"
+  },
+  "author": {
+    "name" : "Dennis von der Bey",
+    "email" : "dennis@vonderbey.eu",
+    "url" : "https://www.vonderbey.eu"
+  },
+  "contributors": [
+    {
+      "name" : "Philipp Bolte",
+      "email" : "philipp.bolte@spherity.com"
+    },
+    {
+      "name" : "Lauritz Leifermann",
+      "email" : "lauritz.leifermann@spherity.com"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/spherity/Ethereum-Revocation-Registry/issues"
+  },
+  "homepage": "https://github.com/spherity/Ethereum-Revocation-Registry#readme",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@typechain/ethers-v5": "^10.1.0",
     "@typechain/truffle-v5": "^8.0.1",
