@@ -11,7 +11,7 @@ export async function assertForPositiveRevocation(registry: RevocationRegistryIn
   assert.isTrue(await registry.isRevoked(namespace, list, revocationKey));
 }
 
-export function assertRevocationStatusChanged(log: any, namespace: string, list: string, revocationKey: string, revoked: boolean) {
+export function assertRevocationStatusChangedEvent(log: any, namespace: string, list: string, revocationKey: string, revoked: boolean) {
   assert.equal(log.event, "RevocationStatusChanged");
   assert.equal(log.args.namespace, namespace);
   assert.equal(log.args.list, list);
@@ -19,25 +19,32 @@ export function assertRevocationStatusChanged(log: any, namespace: string, list:
   assert.equal(log.args.revoked, revoked);
 }
 
-export function assertListDelegateAdded(log: any, namespace: string, delegate: string, list: string) {
+export function assertListDelegateAddedEvent(log: any, namespace: string, delegate: string, list: string) {
   assert.equal(log.event, "ListDelegateAdded");
   assert.equal(log.args.namespace, namespace);
   assert.equal(log.args.list, list);
   assert.equal(log.args.delegate, delegate);
 }
 
-export function assertListDelegateRemoved(log: any, namespace: string, delegate: string, list: string) {
+export function assertListDelegateRemovedEvent(log: any, namespace: string, delegate: string, list: string) {
   assert.equal(log.event, "ListDelegateRemoved");
   assert.equal(log.args.namespace, namespace);
   assert.equal(log.args.list, list);
   assert.equal(log.args.delegate, delegate);
 }
 
-export function assertListOwnerChanged(log: any, namespace: string, list: string, newOwner: string) {
+export function assertListOwnerChangedEvent(log: any, namespace: string, list: string, newOwner: string) {
   assert.equal(log.event, "ListOwnerChanged");
   assert.equal(log.args.namespace, namespace);
   assert.equal(log.args.list, list);
   assert.equal(log.args.newOwner, newOwner);
+}
+
+export function assertRevocationStatusesChangedEvent(log: any, namespace: string, list: string, revoked: boolean[]) {
+  assert.equal(log.event, "RevocationStatusesChanged");
+  assert.equal(log.args.namespace, namespace);
+  assert.equal(log.args.list, list);
+  assert.equal(log.args.revoked.toString(), revoked.toString());
 }
 
 export async function revokeKey(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {

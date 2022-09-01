@@ -104,7 +104,7 @@ contract RevocationRegistry is EIP712 {
     //    BY OWNER
     function _changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal {
         for (uint i = 0; i < revoked.length; i++) {
-            _changeStatus(revoked[i], namespace, list, revocationKeys[i]);
+            registry[namespace][list][revocationKeys[i]] = revoked[i];
         }
         emit RevocationStatusesChanged(namespace, list, revocationKeys, revoked);
     }

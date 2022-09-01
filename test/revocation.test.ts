@@ -1,7 +1,7 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 import {
   assertForNegativeRevocation,
-  assertForPositiveRevocation, assertRevocationStatusChanged,
+  assertForPositiveRevocation, assertRevocationStatusChangedEvent,
   changeStatusesInList,
   revokeKey,
   unrevokeKey
@@ -43,7 +43,7 @@ contract("Revocation", function (accounts) {
   contract("[scoped state]", async function () {
     it("emits event when changing status", async function () {
       const tx: any = await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
-      assertRevocationStatusChanged(tx.logs[0], bobsAcc, list, revocationKey, true);
+      assertRevocationStatusChangedEvent(tx.logs[0], bobsAcc, list, revocationKey, true);
       await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
     });
   });

@@ -1,7 +1,7 @@
 import {
   addListDelegate, assertForNegativeRevocation,
   assertForPositiveRevocation,
-  assertRevocationStatusChanged,
+  assertRevocationStatusChangedEvent,
   revokeKeyDelegated,
   unrevokeKeyDelegated
 } from "./utils";
@@ -34,6 +34,6 @@ contract("Delegate", async (accounts) => {
 
   it("should emit event when changing status", async () => {
     const tx: any = await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
-    assertRevocationStatusChanged(tx.logs[0], bobsAcc, list, revocationKey, true)
+    assertRevocationStatusChangedEvent(tx.logs[0], bobsAcc, list, revocationKey, true)
   })
 })

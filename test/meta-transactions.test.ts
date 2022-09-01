@@ -1,13 +1,21 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 import {
-  addListDelegate, addListDelegateSigned,
+  addListDelegate,
+  addListDelegateSigned,
   assertForNegativeRevocation,
-  assertForPositiveRevocation, changeListOwnerSigned,
+  assertForPositiveRevocation,
+  assertListDelegateAddedEvent,
+  assertListDelegateRemovedEvent,
+  assertListOwnerChangedEvent,
+  assertRevocationStatusChangedEvent,
+  assertRevocationStatusesChangedEvent,
+  changeListOwnerSigned,
   changeStatusesInListDelegatedSigned,
   changeStatusesInListSigned,
   generateEIP712Params,
   getEIP721DomainObject,
-  getNonce, removeListDelegateSigned,
+  getNonce,
+  removeListDelegateSigned,
   SignedFunction,
   signTypedData
 } from "./utils";
@@ -40,10 +48,11 @@ contract("Meta Transaction", function (accounts) {
     const params = generateEIP712Params(SignedFunction.CHANGE_STATUS, domainObject, message)
     const signature = await signTypedData(signer, params)
 
-    await registry.changeStatusSigned(true, signer, list, revocationKey, signer, signature, {from: caller})
+    const tx: any = await registry.changeStatusSigned(true, signer, list, revocationKey, signer, signature, {from: caller})
 
     assert.isTrue(await registry.isRevoked(signer, list, revocationKey))
     assert.isFalse(await registry.isRevoked(caller, list, revocationKey))
+    assertRevocationStatusChangedEvent(tx.logs[0], signer, list, revocationKey, true)
   });
 
   it("sets revocation via a delegate", async () => {
@@ -64,9 +73,10 @@ contract("Meta Transaction", function (accounts) {
     const params = generateEIP712Params(SignedFunction.CHANGE_STATUS_DELEGATED, domainObject, message)
     const signature = await signTypedData(delegate, params)
 
-    await registry.changeStatusDelegatedSigned(true, owner, list, revocationKey, delegate, signature, {from: caller})
+    const tx: any = await registry.changeStatusDelegatedSigned(true, owner, list, revocationKey, delegate, signature, {from: caller})
 
     assert.isTrue(await registry.isRevoked(owner, list, revocationKey))
+    assertRevocationStatusChangedEvent(tx.logs[0], owner, list, revocationKey, true)
   })
 
   it("batch (un-)revoked keys via owner", async () => {
@@ -75,7 +85,7 @@ contract("Meta Transaction", function (accounts) {
       [web3.utils.keccak256("revocationKey1")]: true,
       [web3.utils.keccak256("revocationKey2")]: false,
       [web3.utils.keccak256("revocationKey3")]: false,
-      [web3.utils.keccak256("revocationKey4")]: false
+      [web3.utils.keccak256("revocationKey4")]: true
     }
 
     const nonce = await getNonce(registry, signer)
@@ -89,8 +99,8 @@ contract("Meta Transaction", function (accounts) {
     }
     const params = generateEIP712Params(SignedFunction.CHANGE_STATUSES_IN_LIST, domainObject, message)
     const signature = await signTypedData(signer, params)
-    await changeStatusesInListSigned(registry, Object.values(revocations), signer, list, Object.keys(revocations), signer, signature, caller)
-
+    const tx = await changeStatusesInListSigned(registry, Object.values(revocations), signer, list, Object.keys(revocations), signer, signature, caller)
+    assertRevocationStatusesChangedEvent(tx.logs[0], signer, list, Object.values(revocations))
     for (const [key, value] of Object.entries(revocations)) {
       if (value) {
         await assertForPositiveRevocation(registry, signer, list, key);
@@ -125,7 +135,8 @@ contract("Meta Transaction", function (accounts) {
 
     const params = generateEIP712Params(SignedFunction.CHANGE_STATUSES_IN_LIST_DELEGATED, domainObject, message)
     const signature = await signTypedData(delegate, params)
-    await changeStatusesInListDelegatedSigned(registry, Object.values(revocations), owner, list, Object.keys(revocations), delegate, signature, caller)
+    const tx: any = await changeStatusesInListDelegatedSigned(registry, Object.values(revocations), owner, list, Object.keys(revocations), delegate, signature, caller)
+    assertRevocationStatusesChangedEvent(tx.logs[0], owner, list, Object.values(revocations))
 
     for (const [key, value] of Object.entries(revocations)) {
       if (value) {
@@ -151,8 +162,9 @@ contract("Meta Transaction", function (accounts) {
 
       const params = generateEIP712Params(SignedFunction.CHANGE_LIST_OWNER, domainObject, message)
       const signature = await signTypedData(signer, params)
-      await changeListOwnerSigned(registry, signer, newOwner, list, signer, signature, caller)
+      const tx: any = await changeListOwnerSigned(registry, signer, newOwner, list, signer, signature, caller)
 
+      assertListOwnerChangedEvent(tx.logs[0], signer, list, newOwner)
       assert.isTrue(await registry.identityIsOwner(signer, list, newOwner))
       assert.isFalse(await registry.identityIsOwner(signer, list, signer))
     })
@@ -174,8 +186,9 @@ contract("Meta Transaction", function (accounts) {
 
     const params = generateEIP712Params(SignedFunction.ADD_LIST_DELEGATE, domainObject, message)
     const signature = await signTypedData(signer, params)
+    const tx0 = await addListDelegateSigned(registry, signer, delegate, list, validity, signer, signature, caller);
 
-    await addListDelegateSigned(registry, signer, delegate, list, validity, signer, signature, caller);
+    assertListDelegateAddedEvent(tx0.logs[0], signer, delegate, list)
     assert.isTrue(await registry.identityIsDelegate(signer, list, delegate))
   })
 
@@ -197,8 +210,9 @@ contract("Meta Transaction", function (accounts) {
 
     const params = generateEIP712Params(SignedFunction.REMOVE_LIST_DELEGATE, domainObject, message)
     const signature = await signTypedData(signer, params)
+    const tx: any = await removeListDelegateSigned(registry, signer, delegate, list, signer, signature, caller);
 
-    await removeListDelegateSigned(registry, signer, delegate, list, signer, signature, caller);
+    assertListDelegateRemovedEvent(tx.logs[0], signer, delegate, list)
     assert.isFalse(await registry.identityIsDelegate(signer, list, delegate))
   })
 })

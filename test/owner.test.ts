@@ -1,8 +1,8 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 import {
   addListDelegate,
-  assertListDelegateAdded,
-  assertListDelegateRemoved, assertListOwnerChanged,
+  assertListDelegateAddedEvent,
+  assertListDelegateRemovedEvent, assertListOwnerChangedEvent,
   changeListOwner,
   removeListDelegate
 } from "./utils";
@@ -34,13 +34,13 @@ contract("Owner", async (accounts) => {
     const validity = Math.floor((new Date().getTime() + 1000 * 60 * 60 * 24) / 1000)
     const tx1: any = await addListDelegate(registry, bobsAcc, aliceAcc, list, validity, bobsAcc)
     const tx2: any = await removeListDelegate(registry, bobsAcc, aliceAcc, list, bobsAcc)
-    assertListDelegateAdded(tx1.logs[0], bobsAcc, aliceAcc, list)
-    assertListDelegateRemoved(tx2.logs[0], bobsAcc, aliceAcc, list)
+    assertListDelegateAddedEvent(tx1.logs[0], bobsAcc, aliceAcc, list)
+    assertListDelegateRemovedEvent(tx2.logs[0], bobsAcc, aliceAcc, list)
   })
 
   it("should emit an event when changing the owner of a list", async () => {
     const tx: any = await changeListOwner(registry, bobsAcc, aliceAcc, list, bobsAcc)
-    assertListOwnerChanged(tx.logs[0], bobsAcc, list, aliceAcc)
+    assertListOwnerChangedEvent(tx.logs[0], bobsAcc, list, aliceAcc)
   })
 
   it("should be able to change the owner of a list in its namespace", async () => {
