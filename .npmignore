@@ -1,0 +1,11 @@
+node_modules
+migrations
+development/
+coverage/
+coverage.json
+.idea
+test
+migrations-ts
+README.md
+.solhint.json
+tsconfig.migrate.json
