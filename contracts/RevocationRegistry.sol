@@ -42,7 +42,7 @@ contract RevocationRegistry is EIP712 {
 
     function _changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
         registry[namespace][list][revocationKey] = revoked;
-        // emit Event
+        emit RevocationStatusChanged(namespace, list, revocationKey, revoked);
     }
 
     function changeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isOwner(namespace, list) public {
@@ -73,6 +73,7 @@ contract RevocationRegistry is EIP712 {
     //    BY DELEGATE
     function _changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
         registry[namespace][list][revocationKey] = revoked;
+        emit RevocationStatusChanged(namespace, list, revocationKey, revoked);
     }
 
     function changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isDelegate(namespace, list) public {
@@ -103,8 +104,9 @@ contract RevocationRegistry is EIP712 {
     //    BY OWNER
     function _changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal {
         for (uint i = 0; i < revoked.length; i++) {
-            _changeStatus(revoked[i], namespace, list, revocationKeys[i]);
+            registry[namespace][list][revocationKeys[i]] = revoked[i];
         }
+        emit RevocationStatusesChanged(namespace, list, revocationKeys, revoked);
     }
 
     function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
@@ -161,6 +163,7 @@ contract RevocationRegistry is EIP712 {
     function _changeListOwner(address namespace, address newOwner, bytes32 list) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         newOwners[listLocationHash] = newOwner;
+        emit ListOwnerChanged(namespace, newOwner, list);
     }
 
     function changeListOwner(address namespace, address newOwner, bytes32 list) isOwner(namespace, list) public {
@@ -192,6 +195,7 @@ contract RevocationRegistry is EIP712 {
     function _addListDelegate(address namespace, address delegate, bytes32 list, uint validity) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         delegates[listLocationHash][delegate] = validity;
+        emit ListDelegateAdded(namespace, delegate, list);
     }
 
     function addListDelegate(address namespace, address delegate, bytes32 list, uint validity) isOwner(namespace, list) public {
@@ -222,6 +226,7 @@ contract RevocationRegistry is EIP712 {
     function _removeListDelegate(address namespace, address delegate, bytes32 list) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         delegates[listLocationHash][delegate] = 0;
+        emit ListDelegateRemoved(namespace, delegate, list);
     }
 
     function removeListDelegate(address namespace, address delegate, bytes32 list) isOwner(namespace, list) public {
@@ -285,4 +290,36 @@ contract RevocationRegistry is EIP712 {
         }
         return false;
     }
+
+    event RevocationStatusChanged(
+        address indexed namespace,
+        bytes32 indexed list,
+        bytes32 indexed revocationKey,
+        bool revoked
+    );
+
+    event RevocationStatusesChanged(
+        address indexed namespace,
+        bytes32 indexed list,
+        bytes32[] indexed revocationKeys,
+        bool[] revoked
+    );
+
+    event ListOwnerChanged(
+        address indexed namespace,
+        address indexed newOwner,
+        bytes32 indexed list
+    );
+
+    event ListDelegateAdded(
+        address indexed namespace,
+        address indexed delegate,
+        bytes32 indexed list
+    );
+
+    event ListDelegateRemoved(
+        address indexed namespace,
+        address indexed delegate,
+        bytes32 indexed list
+    );
 }
