@@ -21,6 +21,8 @@ function generateParams(domainObject: any, primaryType: string, message: any) {
         {name: 'namespace', type: 'address'},
         {name: 'list', type: 'bytes32'},
         {name: 'revocationKey', type: 'bytes32'},
+        {name: 'signer', type: 'address'},
+        {name: 'nonce', type: 'uint'},
       ]
     },
   };
@@ -45,11 +47,14 @@ contract("Meta Transaction", function (accounts) {
   it("sets positive revocation with meta transaction", async function () {
     const signer = accounts[0];
     const caller = accounts[1];
+    const nonce = await registry.nonces(signer);
     const message = {
       revoked: true,
       namespace: signer,
       list: list,
       revocationKey: revocationKey,
+      signer: signer,
+      nonce: nonce
     };
 
     const params = generateParams(domainObject, "ChangeStatus", message);
@@ -65,7 +70,7 @@ contract("Meta Transaction", function (accounts) {
         resolve(result.result);
       })
     });
-    await registry.changeStatusSigned(true, signer, list, revocationKey, signature, {from: caller});
+    await registry.changeStatusSigned(true, signer, list, revocationKey, signer, signature, {from: caller});
     assert.isTrue(await registry.isRevoked(signer, list, revocationKey));
     assert.isFalse(await registry.isRevoked(caller, list, revocationKey));
   });

@@ -19,7 +19,7 @@ contract RevocationRegistry is EIP712 {
     mapping(bytes32 => mapping(address => uint)) delegates;
 
     // Nonce tracking for meta transactions
-    mapping(address => uint) nonces;
+    mapping(address => uint) public nonces;
 
     string public constant VERSION_MAJOR = "1";
     string public constant VERSION_MINOR = "0";
@@ -50,21 +50,23 @@ contract RevocationRegistry is EIP712 {
     }
 
     // TODO: rename `signed` suffix to something more self explanatory? Like `meta` maybe?
-    function changeStatusSigned(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, bytes calldata signature) public {
-        bytes32 hash = _hashChangeStatus(revoked, namespace, list, revocationKey);
-        address signer = ECDSA.recover(hash, signature);
-        require(_identityIsOwner(namespace, list, signer), "Signer is not an owner");
-        nonces[signer]++;
+    function changeStatusSigned(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, address signer, bytes calldata signature) public {
+        bytes32 hash = _hashChangeStatus(revoked, namespace, list, revocationKey, signer, nonces[signer]);
+        address recoveredSigner = ECDSA.recover(hash, signature);
+        require(_identityIsOwner(namespace, list, recoveredSigner), "Signer is not an owner");
+        nonces[recoveredSigner]++;
         _changeStatus(revoked, namespace, list, revocationKey);
     }
 
-    function _hashChangeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal view returns(bytes32) {
+    function _hashChangeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, address signer, uint nonce) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeStatus(bool revoked,address namespace,bytes32 list,bytes32 revocationKey)"),
+                keccak256("ChangeStatus(bool revoked,address namespace,bytes32 list,bytes32 revocationKey,address signer,uint nonce)"),
                 revoked,
                 namespace,
                 list,
-                revocationKey
+                revocationKey,
+                signer,
+                nonce
             )));
     }
 
