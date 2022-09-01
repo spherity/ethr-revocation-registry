@@ -1,5 +1,4 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
-import {HttpProvider} from "web3-core";
 import {
   addListDelegate, addListDelegateSigned,
   assertForNegativeRevocation,
@@ -12,7 +11,6 @@ import {
   SignedFunction,
   signTypedData
 } from "./utils";
-import {encodePacked, keccak256} from "web3-utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
@@ -203,8 +201,4 @@ contract("Meta Transaction", function (accounts) {
     await removeListDelegateSigned(registry, signer, delegate, list, signer, signature, caller);
     assert.isFalse(await registry.identityIsDelegate(signer, list, delegate))
   })
-
-
-
-
 })
