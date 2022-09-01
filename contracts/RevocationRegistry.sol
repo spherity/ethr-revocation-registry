@@ -58,7 +58,7 @@ contract RevocationRegistry is EIP712 {
         _changeStatus(revoked, namespace, list, revocationKey);
     }
 
-    function _hashChangeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal returns(bytes32) {
+    function _hashChangeStatus(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("ChangeStatus(bool revoked,address namespace,bytes32 list,bytes32 revocationKey)"),
                 revoked,
@@ -85,7 +85,7 @@ contract RevocationRegistry is EIP712 {
         _changeStatusDelegated(revoked, namespace, list, revocationKey);
     }
 
-    function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal returns(bytes32) {
+    function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("ChangeStatusDelegated(bool revoked,address namespace,bytes32 list,bytes32 revocationKey)"),
                 revoked,
@@ -115,7 +115,7 @@ contract RevocationRegistry is EIP712 {
         _changeStatusesInList(revoked, namespace, list, revocationKeys);
     }
 
-    function _hashChangeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal returns(bytes32) {
+    function _hashChangeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("ChangeStatusesInList(bool[] revoked,address namespace,bytes32 list,bytes32[] revocationKeys)"),
                 revoked,
@@ -138,7 +138,7 @@ contract RevocationRegistry is EIP712 {
         _changeStatusesInList(revoked, namespace, list, revocationKeys);
     }
 
-    function _hashChangeStatusesInListDelegate(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal returns(bytes32) {
+    function _hashChangeStatusesInListDelegate(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("ChangeStatusesInListDelegate(bool[] revoked,address namespace,bytes32 list,bytes32[] revocationKeys)"),
                 revoked,
@@ -167,7 +167,7 @@ contract RevocationRegistry is EIP712 {
         _changeListOwner(namespace, newOwner, list);
     }
 
-    function _hashChangeListOwner(address namespace, address newOwner, bytes32 list) internal returns(bytes32) {
+    function _hashChangeListOwner(address namespace, address newOwner, bytes32 list) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("ChangeListOwner(address namespace,address newOwner,bytes32 list)"),
                 namespace,
@@ -196,7 +196,7 @@ contract RevocationRegistry is EIP712 {
         _addListDelegate(namespace, delegate, list, validity);
     }
 
-    function _hashAddListDelegate(address namespace, address delegate, bytes32 list, uint validity) internal returns(bytes32) {
+    function _hashAddListDelegate(address namespace, address delegate, bytes32 list, uint validity) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("AddListDelegate(address namespace,address delegate,bytes32 list,uint validity)"),
                 namespace,
@@ -224,7 +224,7 @@ contract RevocationRegistry is EIP712 {
         _removeListDelegate(namespace, delegate, list);
     }
 
-    function _hashRemoveListDelegate(address namespace, address delegate, bytes32 list) internal returns(bytes32) {
+    function _hashRemoveListDelegate(address namespace, address delegate, bytes32 list) internal view returns(bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
                 keccak256("RemoveListDelegate(address namespace,address delegate,bytes32 list)"),
                 namespace,
