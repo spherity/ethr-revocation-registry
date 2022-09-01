@@ -9,6 +9,7 @@
   "scripts": {
     "init": "docker-compose -f development/docker-compose.yml up -d",
     "generate-types": "truffle compile && typechain --target=truffle-v5 'build/contracts/*.json'",
+    "generate-ethers-types": "truffle compile && typechain --target=ethers-v5 'build/contracts/*.json'",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && truffle migrate",
     "typecheck": "truffle compile && pnpm generate-types && tsc --noEmit",
     "test": "truffle test",
@@ -19,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
     "@typechain/truffle-v5": "^8.0.1",
     "@types/bn.js": "^4.11.6",
     "@types/chai": "^4.2.11",
