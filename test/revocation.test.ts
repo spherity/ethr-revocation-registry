@@ -1,5 +1,11 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
-import {assertForNegativeRevocation, assertForPositiveRevocation, revokeKey, unrevokeKey} from "./utils";
+import {
+  assertForNegativeRevocation,
+  assertForPositiveRevocation,
+  changeStatusesInList,
+  revokeKey,
+  unrevokeKey
+} from "./utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
@@ -58,14 +64,13 @@ contract("Revocation", function (accounts) {
         [web3.utils.keccak256("revocationKey3")]: false,
         [web3.utils.keccak256("revocationKey4")]: true,
       }
+      await changeStatusesInList(registry, Object.values(revocations), bobsAcc, list, Object.keys(revocations), bobsAcc);
 
-      for (const [revocationKey, revoke] of Object.entries(revocations)) {
-        if (revoke) {
-          await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
-          await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+      for (const [key, value] of Object.entries(revocations)) {
+        if (value) {
+          await assertForPositiveRevocation(registry, bobsAcc, list, key);
         } else {
-          await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
-          await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
+          await assertForNegativeRevocation(registry, bobsAcc, list, key);
         }
       }
     });
