@@ -17,18 +17,18 @@
     "url": "git+https://github.com/spherity/Ethereum-Revocation-Registry.git"
   },
   "author": {
-    "name" : "Dennis von der Bey",
-    "email" : "dennis@vonderbey.eu",
-    "url" : "https://www.vonderbey.eu"
+    "name": "Dennis von der Bey",
+    "email": "dennis@vonderbey.eu",
+    "url": "https://www.vonderbey.eu"
   },
   "contributors": [
     {
-      "name" : "Philipp Bolte",
-      "email" : "philipp.bolte@spherity.com"
+      "name": "Philipp Bolte",
+      "email": "philipp.bolte@spherity.com"
     },
     {
-      "name" : "Lauritz Leifermann",
-      "email" : "lauritz.leifermann@spherity.com"
+      "name": "Lauritz Leifermann",
+      "email": "lauritz.leifermann@spherity.com"
     }
   ],
   "bugs": {
@@ -44,6 +44,7 @@
     "@types/mocha": "^7.0.2",
     "@types/web3": "^1.2.2",
     "chai-as-promised": "^7.1.1",
+    "eth-gas-reporter": "^0.2.25",
     "solhint": "^3.3.7",
     "solidity-coverage": "0.8.0-beta.1",
     "truffle": "^5.1.22",
