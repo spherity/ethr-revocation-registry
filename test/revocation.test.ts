@@ -3,7 +3,7 @@ import {assertForNegativeRevocation, assertForPositiveRevocation, revokeKey, unr
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
-contract("RevocationRegistry", function (accounts) {
+contract("Revocation", function (accounts) {
   let registry: RevocationRegistryInstance;
   const bobsAcc = accounts[0]
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628";
@@ -28,14 +28,14 @@ contract("RevocationRegistry", function (accounts) {
   });
 
   contract("[scoped state]", async function () {
-    it("setting positive revocation state", async function () {
+    it("sets positive revocation state", async function () {
       await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
       await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
     });
   });
 
   contract("[scoped state]", async function () {
-    it("setting positive & negative revocation state", async function () {
+    it("sets positive & negative revocation state", async function () {
       await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
       await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
       await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
@@ -44,14 +44,14 @@ contract("RevocationRegistry", function (accounts) {
   });
 
   contract("[scoped state]", async function () {
-    it("setting negative revocation without change", async function () {
+    it("sets negative revocation without change", async function () {
       await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
       await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
     });
   });
 
   contract("[scoped state]", async function () {
-    it("bulk (un-)revoke keys in a namespace's list", async function () {
+    it("bulk (un-)revokes keys in a namespace's list", async function () {
       const revocations = {
         [web3.utils.keccak256("revocationKey1")]: true,
         [web3.utils.keccak256("revocationKey2")]: false,

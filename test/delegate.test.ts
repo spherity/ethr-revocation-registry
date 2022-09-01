@@ -3,7 +3,7 @@ import {RevocationRegistryInstance} from "../types/truffle-contracts";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
-contract("RevocationRegistry", async (accounts) => {
+contract("Delegate", async (accounts) => {
   let registry: RevocationRegistryInstance;
   const bobsAcc = accounts[0]
   const aliceAcc = accounts[1]
@@ -16,11 +16,11 @@ contract("RevocationRegistry", async (accounts) => {
     await addListDelegate(registry, bobsAcc, aliceAcc, list, validity, bobsAcc)
   })
 
-  it("delegate should be able to revoke a key", async () => {
+  it("should be able to revoke a key", async () => {
     await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
   })
 
-  it("delegate should be able to unrevoke a key", async () => {
+  it("should be able to unrevoke a key", async () => {
     await unrevokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
   })
 })

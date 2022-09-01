@@ -26,7 +26,7 @@ function generateParams(domainObject: any, primaryType: string, message: any) {
   };
 }
 
-contract("RevocationRegistry", function (accounts) {
+contract("Meta Transaction", function (accounts) {
   let registry: RevocationRegistryInstance;
   let domainObject = {};
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628";
@@ -42,7 +42,7 @@ contract("RevocationRegistry", function (accounts) {
     }
   })
 
-  it("setting positive revocation with meta transaction", async function () {
+  it("sets positive revocation with meta transaction", async function () {
     const signer = accounts[0];
     const caller = accounts[1];
     const message = {

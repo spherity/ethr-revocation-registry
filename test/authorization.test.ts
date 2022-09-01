@@ -9,7 +9,7 @@ import {
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
-contract("RevocationRegistry", async (accounts) => {
+contract("Authorization", async (accounts) => {
   let registry: RevocationRegistryInstance;
   const bobsAcc = accounts[0]
   const aliceAcc = accounts[1]
