@@ -294,14 +294,14 @@ contract RevocationRegistry is EIP712 {
     event RevocationStatusChanged(
         address indexed namespace,
         bytes32 indexed list,
-        bytes32 indexed key,
+        bytes32 indexed revocationKey,
         bool revoked
     );
 
     event RevocationStatusesChanged(
         address indexed namespace,
         bytes32 indexed list,
-        bytes32[] indexed keys,
+        bytes32[] indexed revocationKeys,
         bool[] revoked
     );
 

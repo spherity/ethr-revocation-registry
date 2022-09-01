@@ -1,4 +1,10 @@
-import {addListDelegate, revokeKeyDelegated, unrevokeKeyDelegated} from "./utils";
+import {
+  addListDelegate, assertForNegativeRevocation,
+  assertForPositiveRevocation,
+  assertRevocationStatusChanged,
+  revokeKeyDelegated,
+  unrevokeKeyDelegated
+} from "./utils";
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
@@ -18,9 +24,16 @@ contract("Delegate", async (accounts) => {
 
   it("should be able to revoke a key", async () => {
     await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+    await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey)
   })
 
   it("should be able to unrevoke a key", async () => {
     await unrevokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+    await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey)
+  })
+
+  it("should emit event when changing status", async () => {
+    const tx: any = await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+    assertRevocationStatusChanged(tx.logs[0], bobsAcc, list, revocationKey, true)
   })
 })
