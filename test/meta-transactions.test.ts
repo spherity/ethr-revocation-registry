@@ -6,9 +6,9 @@ import {
   assertForPositiveRevocation,
   assertListDelegateAddedEvent,
   assertListDelegateRemovedEvent,
-  assertListOwnerChangedEvent,
+  assertListOwnerChangedEvent, assertListStatusChangedEvent,
   assertRevocationStatusChangedEvent,
-  changeListOwnerSigned,
+  changeListOwnerSigned, changeListStatus, changeListStatusSigned,
   changeStatusesInListDelegatedSigned,
   changeStatusesInListSigned,
   generateEIP712Params,
@@ -238,7 +238,27 @@ contract("Meta Transaction", function (accounts) {
     })
   });
 
+  contract("[scoped state]", async function () {
+    it("change list status to revoked", async function () {
+      const signer = accounts[0]
 
+      const nonce = await getNonce(registry, signer)
+      const message = {
+        revoked: true,
+        namespace: signer,
+        list: list,
+        signer: signer,
+        nonce: nonce
+      }
 
+      const params = generateEIP712Params(SignedFunction.CHANGE_LIST_STATUS, domainObject, message)
+      const signature = await signTypedData(signer, params)
 
+      await assertForNegativeRevocation(registry, signer, list, revocationKey);
+      const tx: any = await changeListStatusSigned(registry, signer, list, true, signer, signature, caller);
+      assertListStatusChangedEvent(tx.logs[0], signer, list, true);
+      assert.isTrue(await registry.listIsRevoked(signer, list));
+      await assertForPositiveRevocation(registry, signer, list, revocationKey);
+    })
+  })
 })
