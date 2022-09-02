@@ -72,8 +72,13 @@ contract("Revocation", function (accounts) {
         [web3.utils.keccak256("revocationKey3")]: false,
         [web3.utils.keccak256("revocationKey4")]: true,
       }
-      await changeStatusesInList(registry, Object.values(revocations), bobsAcc, list, Object.keys(revocations), bobsAcc);
+      const tx: any = await changeStatusesInList(registry, Object.values(revocations), bobsAcc, list, Object.keys(revocations), bobsAcc);
 
+      for (const event of tx.logs) {
+        const eventArgs: any = event.args;
+        const expectedRevocationStatus = revocations[eventArgs.revocationKey]
+        assertRevocationStatusChangedEvent(event, bobsAcc, list, eventArgs.revocationKey, expectedRevocationStatus)
+      }
       for (const [key, value] of Object.entries(revocations)) {
         if (value) {
           await assertForPositiveRevocation(registry, bobsAcc, list, key);

@@ -40,13 +40,6 @@ export function assertListOwnerChangedEvent(log: any, namespace: string, list: s
   assert.equal(log.args.newOwner, newOwner);
 }
 
-export function assertRevocationStatusesChangedEvent(log: any, namespace: string, list: string, revoked: boolean[]) {
-  assert.equal(log.event, "RevocationStatusesChanged");
-  assert.equal(log.args.namespace, namespace);
-  assert.equal(log.args.list, list);
-  assert.equal(log.args.revoked.toString(), revoked.toString());
-}
-
 export async function revokeKey(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {
   return registry.changeStatus.sendTransaction(true, namespace, list, revocationKey, {from: account});
 }
