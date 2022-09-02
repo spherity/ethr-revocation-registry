@@ -1,5 +1,11 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
-import {assertForNegativeRevocation, assertForPositiveRevocation, revokeKey, unrevokeKey} from "./utils";
+import {
+  assertForNegativeRevocation,
+  assertForPositiveRevocation, assertRevocationStatusChangedEvent,
+  changeStatusesInList,
+  revokeKey,
+  unrevokeKey
+} from "./utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
@@ -35,6 +41,14 @@ contract("Revocation", function (accounts) {
   });
 
   contract("[scoped state]", async function () {
+    it("emits event when changing status", async function () {
+      const tx: any = await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
+      assertRevocationStatusChangedEvent(tx.logs[0], bobsAcc, list, revocationKey, true);
+      await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+    });
+  });
+
+  contract("[scoped state]", async function () {
     it("sets positive & negative revocation state", async function () {
       await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
       await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
@@ -58,14 +72,13 @@ contract("Revocation", function (accounts) {
         [web3.utils.keccak256("revocationKey3")]: false,
         [web3.utils.keccak256("revocationKey4")]: true,
       }
+      await changeStatusesInList(registry, Object.values(revocations), bobsAcc, list, Object.keys(revocations), bobsAcc);
 
-      for (const [revocationKey, revoke] of Object.entries(revocations)) {
-        if (revoke) {
-          await revokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
-          await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+      for (const [key, value] of Object.entries(revocations)) {
+        if (value) {
+          await assertForPositiveRevocation(registry, bobsAcc, list, key);
         } else {
-          await unrevokeKey(registry, bobsAcc, list, revocationKey, bobsAcc);
-          await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
+          await assertForNegativeRevocation(registry, bobsAcc, list, key);
         }
       }
     });
