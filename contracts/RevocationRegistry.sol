@@ -71,13 +71,8 @@ contract RevocationRegistry is EIP712 {
     }
 
     //    BY DELEGATE
-    function _changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) internal {
-        registry[namespace][list][revocationKey] = revoked;
-        emit RevocationStatusChanged(namespace, list, revocationKey, revoked);
-    }
-
     function changeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey) isDelegate(namespace, list) public {
-        _changeStatusDelegated(revoked, namespace, list, revocationKey);
+        _changeStatus(revoked, namespace, list, revocationKey);
     }
 
     function changeStatusDelegatedSigned(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, address signer, bytes calldata signature) public {
@@ -85,7 +80,7 @@ contract RevocationRegistry is EIP712 {
         address recoveredSigner = ECDSA.recover(hash, signature);
         require(identityIsDelegate(namespace, list, recoveredSigner), "Signer is not a delegate");
         nonces[recoveredSigner]++;
-        _changeStatusDelegated(revoked, namespace, list, revocationKey);
+        _changeStatus(revoked, namespace, list, revocationKey);
     }
 
     function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 list, bytes32 revocationKey, address signer, uint nonce) internal view returns (bytes32) {
@@ -104,9 +99,8 @@ contract RevocationRegistry is EIP712 {
     //    BY OWNER
     function _changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) internal {
         for (uint i = 0; i < revoked.length; i++) {
-            registry[namespace][list][revocationKeys[i]] = revoked[i];
+            _changeStatus(revoked[i], namespace, list, revocationKeys[i]);
         }
-        emit RevocationStatusesChanged(namespace, list, revocationKeys, revoked);
     }
 
     function changeStatusesInList(bool[] memory revoked, address namespace, bytes32 list, bytes32[] memory revocationKeys) isOwner(namespace, list) public {
@@ -159,7 +153,6 @@ contract RevocationRegistry is EIP712 {
     }
 
     // OWNER
-
     function _changeListOwner(address namespace, address newOwner, bytes32 list) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         newOwners[listLocationHash] = newOwner;
@@ -191,7 +184,6 @@ contract RevocationRegistry is EIP712 {
 
     // DELEGATES
     //    ADD
-
     function _addListDelegate(address namespace, address delegate, bytes32 list, uint validity) internal {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         delegates[listLocationHash][delegate] = validity;
@@ -296,13 +288,6 @@ contract RevocationRegistry is EIP712 {
         bytes32 indexed list,
         bytes32 indexed revocationKey,
         bool revoked
-    );
-
-    event RevocationStatusesChanged(
-        address indexed namespace,
-        bytes32 indexed list,
-        bytes32[] indexed revocationKeys,
-        bool[] revoked
     );
 
     event ListOwnerChanged(

@@ -16,24 +16,30 @@ contract("Delegate", async (accounts) => {
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628"
   const revocationKey = "0x89343794d2fb7dd5d0fba9593a4bb13beaff93a61577029176d0117b0c53b8e6"
 
-  before(async () => {
+  beforeEach(async () => {
     registry = await RevocationRegistry.deployed()
     const validity = Math.floor((new Date().getTime() + 1000 * 60 * 60 * 24) / 1000)
     await addListDelegate(registry, bobsAcc, aliceAcc, list, validity, bobsAcc)
   })
 
-  it("should be able to revoke a key", async () => {
-    await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
-    await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey)
+  contract("[scoped state]", async () => {
+    it("should be able to revoke a key", async () => {
+      await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+      await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey)
+    })
   })
 
-  it("should be able to unrevoke a key", async () => {
-    await unrevokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
-    await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey)
+  contract("[scoped state]", async () => {
+    it("should be able to unrevoke a key", async () => {
+      await unrevokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+      await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey)
+    })
   })
 
-  it("should emit event when changing status", async () => {
-    const tx: any = await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
-    assertRevocationStatusChangedEvent(tx.logs[0], bobsAcc, list, revocationKey, true)
+  contract("[scoped state]", async () => {
+    it("should emit event when changing status", async () => {
+      const tx: any = await revokeKeyDelegated(registry, bobsAcc, list, revocationKey, aliceAcc)
+      assertRevocationStatusChangedEvent(tx.logs[0], bobsAcc, list, revocationKey, true)
+    })
   })
 })
