@@ -1,11 +1,12 @@
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
 import {
   assertForNegativeRevocation,
-  assertForPositiveRevocation, assertRevocationStatusChangedEvent,
+  assertForPositiveRevocation, assertListStatusChangedEvent, assertRevocationStatusChangedEvent, changeListStatus,
   changeStatusesInList,
   revokeKey,
   unrevokeKey
 } from "./utils";
+import {encodePacked, keccak256} from "web3-utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
@@ -88,4 +89,14 @@ contract("Revocation", function (accounts) {
       }
     });
   });
+
+  contract("[scoped state]", async function () {
+    it("change list status to revoked", async function () {
+      await assertForNegativeRevocation(registry, bobsAcc, list, revocationKey);
+      const tx: any = await changeListStatus(registry, bobsAcc, list, true, bobsAcc);
+      assertListStatusChangedEvent(tx.logs[0], bobsAcc, list, true);
+      assert.isTrue(await registry.listIsRevoked(bobsAcc, list));
+      await assertForPositiveRevocation(registry, bobsAcc, list, revocationKey);
+    })
+  })
 });
