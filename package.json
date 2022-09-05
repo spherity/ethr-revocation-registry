@@ -1,8 +1,9 @@
 {
-  "name": "ethr-revocation-list",
+  "name": "@spherity/ethr-revocation-registry",
   "version": "1.0.1",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
   "scripts": {
+    "prepublish": "npm run generate-ethers-types",
     "init": "docker-compose -f development/docker-compose.yml up -d",
     "generate-types": "truffle compile && typechain --target=truffle-v5 'build/contracts/*.json'",
     "generate-ethers-types": "truffle compile && typechain --target=ethers-v5 'build/contracts/*.json'",
