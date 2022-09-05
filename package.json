@@ -1,10 +1,12 @@
 {
-  "name": "ethr-revocation-list",
-  "version": "1.0.0",
+  "name": "@spherity/ethr-revocation-registry",
+  "version": "1.0.2",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
   "scripts": {
+    "prepublish": "npm run generate-ethers-types",
     "init": "docker-compose -f development/docker-compose.yml up -d",
     "generate-types": "truffle compile && typechain --target=truffle-v5 'build/contracts/*.json'",
+    "generate-ethers-types": "truffle compile && typechain --target=ethers-v5 'build/contracts/*.json'",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && truffle migrate",
     "typecheck": "truffle compile && pnpm generate-types && tsc --noEmit",
     "test": "truffle test",
@@ -37,6 +39,7 @@
   "homepage": "https://github.com/spherity/Ethereum-Revocation-Registry#readme",
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "@typechain/ethers-v5": "^10.1.0",
     "@typechain/truffle-v5": "^8.0.1",
     "@types/bn.js": "^4.11.6",
     "@types/chai": "^4.2.11",
@@ -57,6 +60,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
+    "ethers": "^5.7.0",
     "ts-node": "^10.9.1"
   }
 }
