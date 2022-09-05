@@ -40,11 +40,11 @@ export function assertListOwnerChangedEvent(log: any, namespace: string, list: s
   assert.equal(log.args.newOwner, newOwner);
 }
 
-export function assertRevocationStatusesChangedEvent(log: any, namespace: string, list: string, revoked: boolean[]) {
-  assert.equal(log.event, "RevocationStatusesChanged");
+export function assertListStatusChangedEvent(log: any, namespace: string, list: string, revoked: boolean) {
+  assert.equal(log.event, "ListStatusChanged");
   assert.equal(log.args.namespace, namespace);
   assert.equal(log.args.list, list);
-  assert.equal(log.args.revoked.toString(), revoked.toString());
+  assert.equal(log.args.revoked, revoked);
 }
 
 export async function revokeKey(registry: RevocationRegistryInstance, namespace: string, list: string, revocationKey: string, account: string) {
@@ -99,6 +99,14 @@ export async function unrevokeKeyDelegated(registry: RevocationRegistryInstance,
   return registry.changeStatusDelegated.sendTransaction(false, namespace, list, revocationKey, {from: account});
 }
 
+export async function changeListStatus(registry: RevocationRegistryInstance, namespace: string, list: string, revoked: boolean, account: string) {
+  return registry.changeListStatus.sendTransaction(revoked, namespace, list, {from: account});
+}
+
+export async function changeListStatusSigned(registry: RevocationRegistryInstance, namespace: string, list: string, revoked: boolean, signer: string, signature: string, account: string) {
+  return registry.changeListStatusSigned(revoked, namespace, list, signer, signature, {from: account});
+}
+
 export async function getNonce(registry: RevocationRegistryInstance, account: string) {
   const nonceObject: any = await registry.nonces(account);
   return nonceObject.words[0];
@@ -141,6 +149,7 @@ export enum SignedFunction {
   CHANGE_STATUSES_IN_LIST = "ChangeStatusesInList",
   CHANGE_STATUSES_IN_LIST_DELEGATED = "ChangeStatusesInListDelegated",
   CHANGE_LIST_OWNER = "ChangeListOwner",
+  CHANGE_LIST_STATUS = "ChangeListStatus",
   ADD_LIST_DELEGATE = "AddListDelegate",
   REMOVE_LIST_DELEGATE = "RemoveListDelegate",
 }
@@ -245,6 +254,15 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'nonce', type: 'uint'},
       ]
       break;
+    case SignedFunction.CHANGE_LIST_STATUS:
+      params.primaryType = "ChangeListStatus";
+      params.types.ChangeListStatus = [
+        {name: 'revoked', type: 'bool'},
+        {name: 'namespace', type: 'address'},
+        {name: 'list', type: 'bytes32'},
+        {name: 'signer', type: 'address'},
+        {name: 'nonce', type: 'uint'},
+      ]
   }
   return params;
 }
