@@ -4,6 +4,8 @@ development/
 coverage/
 coverage.json
 .idea
-build
-types
 test
+migrations-ts
+README.md
+.solhint.json
+tsconfig.migrate.json
