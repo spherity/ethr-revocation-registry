@@ -6,7 +6,6 @@ import {
   revokeKey,
   unrevokeKey
 } from "./utils";
-import {encodePacked, keccak256} from "web3-utils";
 
 const RevocationRegistry = artifacts.require("RevocationRegistry");
 
