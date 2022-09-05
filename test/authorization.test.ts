@@ -6,8 +6,9 @@ import {
   revokeKey,
   revokeKeyDelegated, unrevokeKey
 } from "./utils";
+import {deployProxy} from "@openzeppelin/truffle-upgrades";
 
-const RevocationRegistry = artifacts.require("RevocationRegistry");
+const RevocationRegistry: any = artifacts.require('RevocationRegistry')
 
 contract("Authorization", async (accounts) => {
   let registry: RevocationRegistryInstance;
@@ -18,8 +19,9 @@ contract("Authorization", async (accounts) => {
   const revocationKey = "0x89343794d2fb7dd5d0fba9593a4bb13beaff93a61577029176d0117b0c53b8e6"
 
   beforeEach(async () => {
-    registry = await RevocationRegistry.deployed();
-  })
+    const deployedProxy: any = await deployProxy(RevocationRegistry, []);
+    registry = deployedProxy;
+  });
 
   contract("should fail revocation", async () => {
     it("if unauthorized account trys to change a foreign list", async () => {

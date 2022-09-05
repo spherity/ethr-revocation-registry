@@ -29,10 +29,10 @@ contract RevocationRegistryV2Test is Initializable, EIP712Upgradeable, PausableU
     // hash(namespace, list) => bool
     mapping(bytes32 => bool) revokedLists;
 
-    string public constant VERSION_MAJOR = "1";
-    string public constant VERSION_MINOR = "0";
-    string public constant VERSION_PATCH = "0";
-    string constant VERSION_DELIMITER = ".";
+    string public VERSION_MAJOR;
+    string public VERSION_MINOR;
+    string public VERSION_PATCH;
+    string VERSION_DELIMITER;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -43,10 +43,14 @@ contract RevocationRegistryV2Test is Initializable, EIP712Upgradeable, PausableU
         __Pausable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
+        VERSION_MAJOR = "1";
+        VERSION_MINOR = "0";
+        VERSION_PATCH = "0";
+        VERSION_DELIMITER = ".";
         __EIP712_init("Revocation Registry", version());
     }
 
-    function version() public pure returns (string memory) {
+    function version() public view returns (string memory) {
         return string.concat(VERSION_MAJOR, VERSION_DELIMITER, VERSION_MINOR, VERSION_DELIMITER, VERSION_PATCH);
     }
 

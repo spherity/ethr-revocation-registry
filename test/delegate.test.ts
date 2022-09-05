@@ -6,8 +6,9 @@ import {
   unrevokeKeyDelegated
 } from "./utils";
 import {RevocationRegistryInstance} from "../types/truffle-contracts";
+import {deployProxy} from "@openzeppelin/truffle-upgrades";
 
-const RevocationRegistry = artifacts.require("RevocationRegistry");
+const RevocationRegistry: any = artifacts.require("RevocationRegistry");
 
 contract("Delegate", async (accounts) => {
   let registry: RevocationRegistryInstance;
@@ -17,7 +18,8 @@ contract("Delegate", async (accounts) => {
   const revocationKey = "0x89343794d2fb7dd5d0fba9593a4bb13beaff93a61577029176d0117b0c53b8e6"
 
   beforeEach(async () => {
-    registry = await RevocationRegistry.deployed()
+    const deployedProxy: any = await deployProxy(RevocationRegistry, []);
+    registry = deployedProxy;
     const validity = Math.floor((new Date().getTime() + 1000 * 60 * 60 * 24) / 1000)
     await addListDelegate(registry, bobsAcc, aliceAcc, list, validity, bobsAcc)
   })

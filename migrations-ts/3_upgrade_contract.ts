@@ -1,7 +1,7 @@
 import {upgradeProxy} from "@openzeppelin/truffle-upgrades";
 
 const RevocationRegistry = artifacts.require('RevocationRegistry')
-const RevocationRegistryV2: any = artifacts.require('RevocationRegistryV2')
+const RevocationRegistryV2: any = artifacts.require('RevocationRegistryV2Test')
 
 module.exports = async function (deployer: any) {
   const existing = await RevocationRegistry.deployed();
