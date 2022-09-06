@@ -96,3 +96,24 @@ To get a coverage report  you need to run:
 ```
 npm run test:coverage
 ```
+
+### Versioning
+
+This repository has three deliverables with versions:
+
+* node module
+* contract
+* contract types
+
+All of these leverage semantic versioning.
+
+#### Node Module
+The node module version is separated from the other ones.
+
+#### Contract
+The contract's version will always be bumped in a major version when the public interface changes (public methods, public fields).
+If this happens, a new contract file should be used with the changes you intend to apply.
+
+#### Contract Types
+The contract types version will follow the contract's version accordingly, but will only carry the
+major version in their name (V1, V2).
