@@ -6,8 +6,9 @@ import {
   changeListOwner,
   removeListDelegate
 } from "./utils";
+import {deployProxy} from "@openzeppelin/truffle-upgrades";
 
-const RevocationRegistry = artifacts.require("RevocationRegistry");
+const RevocationRegistry: any = artifacts.require("RevocationRegistry");
 
 contract("Owner", async (accounts) => {
   let registry: RevocationRegistryInstance;
@@ -15,9 +16,10 @@ contract("Owner", async (accounts) => {
   const aliceAcc = accounts[1]
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628"
 
-  before(async () => {
-    registry = await RevocationRegistry.deployed()
-  })
+  beforeEach(async () => {
+    const deployedProxy: any = await deployProxy(RevocationRegistry, []);
+    registry = deployedProxy;
+  });
 
   contract("[scoped state]", async () => {
     it("should be able to add a delegate to a list in its namespace", async () => {

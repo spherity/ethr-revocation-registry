@@ -6,18 +6,20 @@ import {
   revokeKey,
   unrevokeKey
 } from "./utils";
-import {encodePacked, keccak256} from "web3-utils";
+import {deployProxy} from "@openzeppelin/truffle-upgrades";
 
-const RevocationRegistry = artifacts.require("RevocationRegistry");
+const RevocationRegistry: any = artifacts.require("RevocationRegistry");
 
 contract("Revocation", function (accounts) {
   let registry: RevocationRegistryInstance;
   const bobsAcc = accounts[0]
   const list = "0x3458b9bfc7963978b7d40ef225177c45193c2889902357db3b043a4e319a9628";
   const revocationKey = "0x89343794d2fb7dd5d0fba9593a4bb13beaff93a61577029176d0117b0c53b8e6";
+
   beforeEach(async () => {
-    registry = await RevocationRegistry.deployed();
-  })
+    const deployedProxy: any = await deployProxy(RevocationRegistry, []);
+    registry = deployedProxy;
+  });
 
   contract("[scoped state]", async function () {
     it("should be negative for every account", async function () {

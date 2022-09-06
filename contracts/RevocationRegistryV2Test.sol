@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /// @custom:security-contact security@spherity.com
-contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
+contract RevocationRegistryV2Test is Initializable, EIP712Upgradeable, PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable {
     // Revocations happen in revocation lists that belong to an address/ user namespace
     mapping(address => mapping(bytes32 => mapping(bytes32 => bool))) registry;
 
@@ -61,6 +61,10 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         } else {
             return (registry[namespace][list][revocationKey]);
         }
+    }
+
+    function test() public pure returns(uint) {
+        return 777;
     }
 
     // CHANGE STATUS
