@@ -9,3 +9,5 @@ migrations-ts
 README.md
 .solhint.json
 tsconfig.migrate.json
+.DS_STORE
+.openzeppelin/
