@@ -7,3 +7,5 @@ coverage.json
 build
 types
 test
+.DS_STORE
+.openzeppelin/

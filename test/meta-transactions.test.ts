@@ -8,7 +8,7 @@ import {
   assertListDelegateRemovedEvent,
   assertListOwnerChangedEvent, assertListStatusChangedEvent,
   assertRevocationStatusChangedEvent,
-  changeListOwnerSigned, changeListStatus, changeListStatusSigned,
+  changeListOwnerSigned, changeListStatusSigned,
   changeStatusesInListDelegatedSigned,
   changeStatusesInListSigned,
   generateEIP712Params,
