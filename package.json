@@ -5,13 +5,14 @@
   "scripts": {
     "prepare": "npm run generate-ethers-types",
     "init": "docker-compose -f development/docker-compose.yml up -d",
-    "generate-types": "truffle compile && typechain --target=truffle-v5 'build/contracts/*.json'",
-    "generate-ethers-types": "truffle compile && typechain --target=ethers-v5 'build/contracts/*.json'",
-    "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && truffle migrate",
+    "generate-types": "npm run compile && typechain --target=truffle-v5 'build/contracts/*.json'",
+    "generate-ethers-types": "npm run compile && typechain --target=ethers-v5 'build/contracts/*.json'",
+    "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate",
+    "migrate-goerli": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network goerli",
     "typecheck": "truffle compile && pnpm generate-types && tsc --noEmit",
     "test": "truffle test",
     "test:coverage": "truffle run coverage",
-    "compile": "truffle compile",
+    "compile": "truffle compile && apply-registry",
     "deploy": "truffle deploy"
   },
   "repository": {
@@ -52,6 +53,7 @@
     "solhint": "^3.3.7",
     "solidity-coverage": "0.8.0-beta.1",
     "truffle": "^5.1.22",
+    "truffle-deploy-registry": "^0.5.1",
     "truffle-typings": "^1.0.8",
     "typescript": "^4.6",
     "web3": "^1",
@@ -62,6 +64,8 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",
     "@openzeppelin/contracts-upgradeable": "^4.7.3",
+    "@truffle/hdwallet-provider": "^2.0.14",
+    "dotenv": "^16.0.2",
     "ethers": "^5.7.0",
     "ts-node": "^10.9.1"
   }

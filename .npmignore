@@ -10,4 +10,5 @@ README.md
 .solhint.json
 tsconfig.migrate.json
 .DS_STORE
-.openzeppelin/
+.openzeppelin/unknown-1337.json
+.env
