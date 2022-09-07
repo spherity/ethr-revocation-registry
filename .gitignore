@@ -8,5 +8,4 @@ build
 types
 test
 .DS_STORE
-.openzeppelin/unknown-1337.json
 .env

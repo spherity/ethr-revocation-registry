@@ -13,7 +13,6 @@
     "test": "truffle test",
     "test:coverage": "truffle run coverage",
     "compile": "truffle compile && apply-registry",
-    "deploy": "truffle deploy"
   },
   "repository": {
     "type": "git",
