@@ -8,4 +8,4 @@ build
 types
 test
 .DS_STORE
-.openzeppelin/
+.env

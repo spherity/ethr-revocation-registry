@@ -1,10 +1,11 @@
+const tdr = require('truffle-deploy-registry')
 const Migrations = artifacts.require('Migrations')
 
-const migration: Truffle.Migration = function (deployer) {
-  deployer.deploy(Migrations)
+module.exports = async (deployer: any) => {
+  await deployer.deploy(Migrations).then((migrationsInstance: any) => {
+    return tdr.appendInstance(migrationsInstance)
+  })
 }
-
-module.exports = migration
 
 // because of https://stackoverflow.com/questions/40900791/cannot-redeclare-block-scoped-variable-in-unrelated-files
 export {}
