@@ -35,7 +35,7 @@ jobs:
   deploy-goerli:
     #needs: publish-npm
     runs-on: ubuntu-latest
-    environment: test-goerli
+    environment: test-deploy
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
