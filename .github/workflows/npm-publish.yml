@@ -3,31 +3,47 @@
 
 name: Node.js Package
 
-on:
-  release:
-    types: [created]
+on: push
+#  release:
+#    types: [created]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-#      - run: npm test
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#      - run: npm ci
+##      - run: npm test
+#
+#  publish-npm:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          registry-url: https://registry.npmjs.org/
+#      - run: npm ci
+#      - run: npm publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
-  publish-npm:
-    needs: build
+  deploy-goerli:
+    needs: publish-npm
     runs-on: ubuntu-latest
+    environment: test-goerli
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm publish
+      - run: npm run generate-types
+      - run: npm run migrate-goerli
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
+          REGISTRY_WALLET_PRIVATE_KEY: ${{secrets.REGISTRY_WALLET_PRIVATE_KEY}}
