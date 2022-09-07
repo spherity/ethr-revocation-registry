@@ -12,7 +12,7 @@
     "typecheck": "truffle compile && pnpm generate-types && tsc --noEmit",
     "test": "truffle test",
     "test:coverage": "truffle run coverage",
-    "compile": "truffle compile && apply-registry",
+    "compile": "truffle compile && apply-registry"
   },
   "repository": {
     "type": "git",
