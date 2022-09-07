@@ -46,7 +46,7 @@ require("ts-node").register({
 });
 
 require('dotenv').config();
-const { WALLET_PRIVATE_KEY, INFURA_PROJECT_ID } = process.env;
+const { REGISTRY_WALLET_PRIVATE_KEY, INFURA_PROJECT_ID } = process.env;
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
@@ -86,7 +86,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
     goerli: {
-      provider: () => new HDWalletProvider(WALLET_PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_PROJECT_ID}`),
+      provider: () => new HDWalletProvider(REGISTRY_WALLET_PRIVATE_KEY, `https://goerli.infura.io/v3/${INFURA_PROJECT_ID}`),
       network_id: 5,       // Goerli's id
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
