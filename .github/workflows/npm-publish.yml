@@ -33,7 +33,7 @@ jobs:
 #          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   deploy-goerli:
-    needs: publish-npm
+    #needs: publish-npm
     runs-on: ubuntu-latest
     environment: test-goerli
     steps:
