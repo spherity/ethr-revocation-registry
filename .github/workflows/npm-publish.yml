@@ -42,7 +42,7 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run generate-types
-      - run: pwd && ls -la
+      - run: rm -r types/ethers-contracts # bug: if we don't remove this, the migration.js generation will mess up
       - run: npm run migrate-goerli
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
