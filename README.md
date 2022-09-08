@@ -54,9 +54,10 @@ Implementers can call all methods of the registry directly with already existing
 
 ## Contract Deployments
 
-| Network Name | name    | chainId | hexChainId | Registry Address   | Registry version      |
-|--------------|---------|---------|------------|--------------------|-----------------------|
+| Network Name | name    | chainId | hexChainId | Registry Address                           | Registry version |
+|--------------|---------|---------|------------|--------------------------------------------|------------------|
 | Mainnet      | mainnet | 1       | 0x01       |||
+| Goerli       | goerli  | 5       | 0x05       | 0x185D1Cf733e2C85A7Eda4f188036baA5b7a11182 | 1.0.0            |
 
 ## Development
 
@@ -97,6 +98,22 @@ To get a coverage report  you need to run:
 npm run test:coverage
 ```
 
+### Migrations
+
+The Truffle migration feature is used to deploy the contracts to the different networks which ensures that the logic and proxy contract get upgraded correctly. Fot MINOR version updates, the contracts .sol file can be edited directly. The the following process has to be followed:
+1. Copy the `X_upgrade_contract.ts` file from the `migrations` folder to a new file with an increased number at the front and telling description.
+2. Run `npm run generate-types` to generate the types for the updated contract.
+3. Run `npm run migrate` to deploy the new contract to the local network.
+4. If everything works, commit your changes.
+
+For MAJOR version updates, the following steps have to be followed:
+1. Copy the RevocationRegistry.sol file to a new file with the new version number attached to it. (like `RevocationRegistryV2.sol`)
+2. Copy the `X_upgrade_contract.ts` file from the `migrations` folder to a new file with an increased number at the front and telling description. ALSO: Reference the new contracts artefact that should be deployed.
+3. Run `npm run generate-types` to generate the types for the updated contract.
+4. Run `npm run migrate` to deploy the new contract to the local network.
+5. If everything works, commit your changes.
+
+When creating a new release, a GitHub action will automatically upgrade the contract on the networks. The files in the `networks` and `.openzeppelin` are needed for the migrations to keep track what contracts are deployed to what addresses on which networks. Don't modify or delete them.
 ### Versioning
 
 This repository has three deliverables with versions:
