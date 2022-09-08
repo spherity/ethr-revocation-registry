@@ -42,10 +42,12 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run generate-types
+      - run: pwd && ls -l
       - run: npm run migrate-goerli
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
           REGISTRY_WALLET_PRIVATE_KEY: ${{secrets.REGISTRY_WALLET_PRIVATE_KEY}}
+      - run: pwd && ls -l
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "chore: update deployment files"
