@@ -9,3 +9,5 @@ types
 test
 .DS_STORE
 .env
+.openzeppelin/unknown-1337.json
+networks/5777.json
