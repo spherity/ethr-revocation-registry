@@ -54,10 +54,6 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         return string.concat(VERSION_MAJOR, VERSION_DELIMITER, VERSION_MINOR, VERSION_DELIMITER, VERSION_PATCH);
     }
 
-    function test() public view returns (bool) {
-        return true;
-    }
-
     function isRevoked(address namespace, bytes32 list, bytes32 revocationKey) public view returns (bool) {
         bytes32 listLocationHash = generateListLocationHash(namespace, list);
         if (revokedLists[listLocationHash]) {
