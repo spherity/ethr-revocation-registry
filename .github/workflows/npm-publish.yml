@@ -3,7 +3,8 @@
 
 name: Node.js Package
 
-on: push
+on:
+  push
 
 jobs:
 #  build:
@@ -31,7 +32,7 @@ jobs:
 #          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   deploy-goerli:
-    needs: publish-npm
+    #needs: publish-npm
     runs-on: ubuntu-latest
     environment: goerli-deploy
     steps:
