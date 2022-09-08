@@ -40,12 +40,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: "chore: update deployment files"
       - run: npm ci
       - run: npm run generate-types
       - run: npm run migrate-goerli
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: update deployment files"
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
           REGISTRY_WALLET_PRIVATE_KEY: ${{secrets.REGISTRY_WALLET_PRIVATE_KEY}}
