@@ -63,6 +63,10 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         }
     }
 
+    function test() public view returns (bool) {
+        return true;
+    }
+
     // CHANGE STATUS
     //    BY OWNER
 
