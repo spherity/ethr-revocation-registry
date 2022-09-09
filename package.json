@@ -9,10 +9,10 @@
     "generate-ethers-types": "npm run compile && typechain --target=ethers-v5 'build/contracts/*.json'",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate",
     "migrate-goerli": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network goerli",
-    "typecheck": "truffle compile && pnpm generate-types && tsc --noEmit",
-    "test": "truffle test",
-    "test:coverage": "truffle run coverage",
-    "compile": "truffle compile && apply-registry"
+    "typecheck": "npx truffle compile && pnpm generate-types && tsc --noEmit",
+    "test": "npx truffle test",
+    "test:coverage": "npx truffle run coverage",
+    "compile": "npx truffle compile && apply-registry"
   },
   "repository": {
     "type": "git",
