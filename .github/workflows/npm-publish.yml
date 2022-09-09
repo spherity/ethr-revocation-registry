@@ -43,7 +43,6 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run generate-types
-      - run: rm -r types/ethers-contracts # bug: if we don't remove this, the migration.js generation will mess up
       - run: npm run migrate-goerli
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
@@ -55,3 +54,6 @@ jobs:
           title: "chore: update deployment data"
           body: A new version of the contract has been deployed. This PR updates the deployment data for future migrations.
           branch: update-deployment-data
+          team-reviewers: |
+            owners
+            maintainers
