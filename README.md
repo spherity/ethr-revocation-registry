@@ -113,7 +113,7 @@ For MAJOR version updates, the following steps have to be followed:
 4. Run `npm run migrate` to deploy the new contract to the local network.
 5. If everything works, commit your changes.
 
-When creating a new release, a GitHub action will automatically upgrade the contract on the networks. The files in the `networks` and `.openzeppelin` are needed for the migrations to keep track what contracts are deployed to what addresses on which networks. Don't modify or delete them.
+When creating a new release, a GitHub action will automatically upgrade the contract on the networks. The files in the `networks` and `.openzeppelin` are needed for the migrations to keep track what contracts are deployed to what addresses on which networks. Don't modify or delete them. The updated versions of those files will be committed in a new pull request that needs to be merged by owners or maintainers.
 ### Versioning
 
 This repository has three deliverables with versions:
