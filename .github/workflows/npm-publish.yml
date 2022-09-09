@@ -3,39 +3,39 @@
 
 name: Node.js Package
 
-on:
-  release:
-    types: [created]
+on: push
+#  release:
+#    types: [created]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-#      - run: npm test
-
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#      - run: npm ci
+##      - run: npm test
+#
+#  publish-npm:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          registry-url: https://registry.npmjs.org/
+#      - run: npm ci
+#      - run: npm publish
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   deploy-goerli:
-    needs: publish-npm
+    #needs: publish-npm
     runs-on: ubuntu-latest
-    environment: goerli-deploy
+    #environment: goerli-deploy
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -48,6 +48,10 @@ jobs:
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
           REGISTRY_WALLET_PRIVATE_KEY: ${{secrets.REGISTRY_WALLET_PRIVATE_KEY}}
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
         with:
-          commit_message: "chore: update deployment files"
+          commit-message: "chore: update deployment data"
+          title: "chore: update deployment data"
+          body: A new version of the contract has been deployed. This PR updates the deployment data for future migrations.
+          branch: update-deployment-data
