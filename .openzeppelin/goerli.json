@@ -2,15 +2,15 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0x61A43a55f57f23B0C84e3A43581cC5B7bE2D6B4A",
-      "txHash": "0x498fffce1bb6adc354789964a48a6cbc076db451dffa44a16804fef381c13ae2",
+      "address": "0x185D1Cf733e2C85A7Eda4f188036baA5b7a11182",
+      "txHash": "0x01aa53a2e5e75e2f78f68ea853cc22cf22d5e6eeb49b90323f4a56f6277059ee",
       "kind": "uups"
     }
   ],
   "impls": {
     "e4b8230ab5cc85abc7a3089fa5f3c259bdc32f770de903684638d905ba591250": {
-      "address": "0xBCF48D4717FAa0963b4D5e0Fe192BA525835e49e",
-      "txHash": "0xa90c8a1f6cd7f7512a9e3a99563f413e5a9c24e2e79391d10759bd7f4d0656e9",
+      "address": "0x1a9b1BE650dAb7570adEe705F1DCa28Eb5fB9BD8",
+      "txHash": "0x24ebf21eefe0ed8f72d83e85b7154c51b59d38517a36db96df5fbc00269b11f0",
       "layout": {
         "storage": [
           {

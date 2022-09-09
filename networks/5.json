@@ -1,12 +1,12 @@
 [
   {
     "contractName": "Migrations",
-    "address": "0x0fcEC7BDE3915172779137C11E9370E286BAec0a",
-    "transactionHash": "0x260d295c809f65392d1e9938701c8aa80c0918ea3b382c7cee29583acf8c0525"
+    "address": "0xf3765B537a61faADC24283bc8125835Bd979e4BB",
+    "transactionHash": "0x7c96d19bb3ba62a6ae2c04f20e69db165f46d17c5af88a941ce4e5c9d0f941f8"
   },
   {
     "contractName": "RevocationRegistry",
-    "address": "0x61A43a55f57f23B0C84e3A43581cC5B7bE2D6B4A",
-    "transactionHash": "0x498fffce1bb6adc354789964a48a6cbc076db451dffa44a16804fef381c13ae2"
+    "address": "0x185D1Cf733e2C85A7Eda4f188036baA5b7a11182",
+    "transactionHash": "0x01aa53a2e5e75e2f78f68ea853cc22cf22d5e6eeb49b90323f4a56f6277059ee"
   }
 ]
