@@ -2,6 +2,8 @@
   "name": "@spherity/ethr-revocation-registry",
   "version": "1.0.5",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
   "scripts": {
     "prepare": "npm run types",
     "init": "docker-compose -f development/docker-compose.yml up -d",
@@ -12,12 +14,20 @@
     "compile-types": "npm run compile-truffle-types && npm run compile-ethers-types",
     "compile-truffle-types": "echo 'truffle types are not supported yet for distribution'",
     "compile-ethers-types": "tsc -p tsconfig.ethers.json --outDir ./types/ethers-v5/",
+    "compile-src": "tsc -p tsconfig.src.json --outDir ./dist/",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate",
     "migrate-goerli": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network goerli",
     "test": "npx truffle test",
     "test:coverage": "npx truffle run coverage",
     "compile": "npx truffle compile && apply-registry"
   },
+  "files": [
+    "dist",
+    "types",
+    "contracts",
+    "networks",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/spherity/Ethereum-Revocation-Registry.git"
