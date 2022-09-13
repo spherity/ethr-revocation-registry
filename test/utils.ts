@@ -1,4 +1,4 @@
-import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-v5";
 import {HttpProvider} from "web3-core";
 
 // TODO: Let's discuss if we really want to have separate cases / fncts for revoke/ unrevoke

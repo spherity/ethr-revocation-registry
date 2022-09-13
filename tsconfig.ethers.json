@@ -1,4 +1,7 @@
 {
+  "compilerOptions": {
+    "declaration": true
+  },
   "extends": "./tsconfig.json",
   "include": [
     "./types-ts/ethers-v5/*.ts"
