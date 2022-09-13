@@ -1,6 +1,6 @@
 {
   "name": "@spherity/ethr-revocation-registry",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
   "scripts": {
     "prepare": "npm run types",
