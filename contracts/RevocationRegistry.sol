@@ -370,7 +370,7 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
 
     event RevocationListStatusChanged(
         address indexed namespace,
-        bytes32 indexed revocationlist,
+        bytes32 indexed revocationList,
         bool revoked
     );
 
