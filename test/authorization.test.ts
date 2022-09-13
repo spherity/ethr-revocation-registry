@@ -1,4 +1,4 @@
-import {RevocationRegistryInstance} from "../types/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
 import {
   addListDelegate,
   changeListOwner,

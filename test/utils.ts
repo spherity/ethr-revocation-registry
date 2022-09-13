@@ -1,4 +1,4 @@
-import {RevocationRegistryInstance} from "../types/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
 import {HttpProvider} from "web3-core";
 
 // TODO: Let's discuss if we really want to have separate cases / fncts for revoke/ unrevoke
@@ -154,7 +154,7 @@ export enum SignedFunction {
   REMOVE_LIST_DELEGATE = "RemoveListDelegate",
 }
 
-// TODO: replace any with correct type and maybe throw it into the types folder?
+// TODO: replace any with correct type and maybe throw it into the types-ts folder?
 interface EIP712Params {
   domain: any;
   message: any;

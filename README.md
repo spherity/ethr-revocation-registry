@@ -79,10 +79,10 @@ npm run migrate
 Then you can generate the contract's types:
 
 ```
-npm run generate-types
+npm run types
 ```
 
-Everytime you change something at the contract you need to run a migration & generate the types anew if the interfaces changed.
+Everytime you change something at the contract and the interface changes you need to rerun the type generation.
 
 ### Test Suite
 
@@ -102,14 +102,14 @@ npm run test:coverage
 
 The Truffle migration feature is used to deploy the contracts to the different networks which ensures that the logic and proxy contract get upgraded correctly. Fot MINOR version updates, the contracts .sol file can be edited directly. The the following process has to be followed:
 1. Copy the `X_upgrade_contract.ts` file from the `migrations` folder to a new file with an increased number at the front and telling description.
-2. Run `npm run generate-types` to generate the types for the updated contract.
+2. Run `npm run types` to generate the types for the updated contract.
 3. Run `npm run migrate` to deploy the new contract to the local network.
 4. If everything works, commit your changes.
 
 For MAJOR version updates, the following steps have to be followed:
 1. Copy the RevocationRegistry.sol file to a new file with the new version number attached to it. (like `RevocationRegistryV2.sol`)
 2. Copy the `X_upgrade_contract.ts` file from the `migrations` folder to a new file with an increased number at the front and telling description. ALSO: Reference the new contracts artefact that should be deployed.
-3. Run `npm run generate-types` to generate the types for the updated contract.
+3. Run `npm run types` to generate the types for the updated contract.
 4. Run `npm run migrate` to deploy the new contract to the local network.
 5. If everything works, commit your changes.
 
