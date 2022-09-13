@@ -53,7 +53,7 @@ jobs:
           title: "chore: update deployment data"
           body: A new version of the contract has been deployed. This PR updates the deployment data for future migrations.
           branch: update-deployment-data
-          base: ${{ github.head_ref }}
+          base: main
           team-reviewers: |
             owners
             maintainers
