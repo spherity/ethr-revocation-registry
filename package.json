@@ -14,7 +14,6 @@
     "compile-ethers-types": "tsc -p tsconfig.ethers.json --outDir ./types/ethers-v5/",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate",
     "migrate-goerli": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network goerli",
-    "typecheck": "npx truffle compile && pnpm generate-truffle-types && tsc --noEmit",
     "test": "npx truffle test",
     "test:coverage": "npx truffle run coverage",
     "compile": "npx truffle compile && apply-registry"
