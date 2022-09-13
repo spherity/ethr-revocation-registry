@@ -6,7 +6,6 @@
     "strict": true,
     "target": "ES2018",
     "sourceMap": true,
-    "esModuleInterop": true,
-    "declaration": true
+    "esModuleInterop": true
   }
 }

@@ -1,4 +1,4 @@
-import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-v5";
 import {
   assertForNegativeRevocation,
   assertForPositiveRevocation, assertListStatusChangedEvent, assertRevocationStatusChangedEvent, changeListStatus,
