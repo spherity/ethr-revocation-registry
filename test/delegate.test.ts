@@ -5,7 +5,7 @@ import {
   revokeKeyDelegated,
   unrevokeKeyDelegated
 } from "./utils";
-import {RevocationRegistryInstance} from "../types/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
 import {deployProxy} from "@openzeppelin/truffle-upgrades";
 
 const RevocationRegistry: any = artifacts.require("RevocationRegistry");

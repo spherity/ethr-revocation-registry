@@ -1,6 +1,6 @@
 import {upgradeProxy} from "@openzeppelin/truffle-upgrades";
 import {assertForPositiveRevocation, revokeKey} from "./utils";
-import {RevocationRegistryInstance} from "../types/truffle-contracts";
+import {RevocationRegistryInstance} from "../types-ts/truffle-contracts";
 import {ContractClass} from "@openzeppelin/truffle-upgrades/dist/utils";
 
 const { deployProxy } = require('@openzeppelin/truffle-upgrades');
