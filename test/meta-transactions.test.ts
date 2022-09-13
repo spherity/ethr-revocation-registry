@@ -43,7 +43,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         revoked: true,
         namespace: signer,
-        list: list,
+        revocationList: list,
         revocationKey: revocationKey,
         signer: signer,
         nonce: nonce
@@ -70,7 +70,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         revoked: true,
         namespace: owner,
-        list: list,
+        revocationList: list,
         revocationKey: revocationKey,
         signer: delegate,
         nonce: nonce
@@ -99,7 +99,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         revoked: Object.values(revocations),
         namespace: signer,
-        list: list,
+        revocationList: list,
         revocationKeys: Object.keys(revocations),
         signer: signer,
         nonce: nonce
@@ -140,7 +140,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         revoked: Object.values(revocations),
         namespace: owner,
-        list: list,
+        revocationList: list,
         revocationKeys: Object.keys(revocations),
         signer: delegate,
         nonce: nonce
@@ -174,7 +174,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         namespace: signer,
         newOwner: newOwner,
-        list: list,
+        revocationList: list,
         signer: signer,
         nonce: nonce
       }
@@ -199,7 +199,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         namespace: signer,
         delegate: delegate,
-        list: list,
+        revocationList: list,
         validity: validity,
         signer: signer,
         nonce: nonce
@@ -226,7 +226,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         namespace: signer,
         delegate: delegate,
-        list: list,
+        revocationList: list,
         signer: signer,
         nonce: nonce
       }
@@ -248,7 +248,7 @@ contract("Meta Transaction", function (accounts) {
       const message = {
         revoked: true,
         namespace: signer,
-        list: list,
+        revocationList: list,
         signer: signer,
         nonce: nonce
       }
