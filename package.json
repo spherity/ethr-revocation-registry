@@ -2,8 +2,8 @@
   "name": "@spherity/ethr-revocation-registry",
   "version": "1.0.5",
   "description": "The Ethereum Revocation List types for smart contract interaction.",
-  "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "prepare": "npm run types && npm run compile-src",
     "init": "docker-compose -f development/docker-compose.yml up -d",
