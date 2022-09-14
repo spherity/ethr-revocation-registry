@@ -16,7 +16,7 @@ import {
   signTypedData
 } from "./utils";
 import {deployProxy} from "@openzeppelin/truffle-upgrades";
-import {generateEIP712Params, getEIP721DomainObject, SignedFunction} from "../src/util";
+import {generateEIP712Params, getEIP721DomainObject, SignedFunction} from "./utils";
 
 const RevocationRegistry: any = artifacts.require("RevocationRegistry");
 
@@ -29,8 +29,7 @@ contract("Meta Transaction", function (accounts) {
 
   beforeEach(async () => {
     const deployedProxy: any = await deployProxy(RevocationRegistry, []);
-    registry = deployedProxy;
-    domainObject = await getEIP721DomainObject(await registry.version(), await web3.eth.getChainId(), registry.address)
+    domainObject = await getEIP721DomainObject(deployedProxy)
   })
 
 
