@@ -1,7 +1,3 @@
 export {
-    EIP712Domain,
-    generateEIP712Params,
-    getEIP721DomainObject,
-    EIP712Params,
-    SignedFunction
+    EIP712ChangeStatusType
 } from "./util"

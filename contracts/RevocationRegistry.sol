@@ -36,6 +36,7 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
+        initialize();
         _disableInitializers();
     }
 
