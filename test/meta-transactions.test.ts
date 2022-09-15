@@ -29,7 +29,8 @@ contract("Meta Transaction", function (accounts) {
 
   beforeEach(async () => {
     const deployedProxy: any = await deployProxy(RevocationRegistry, []);
-    domainObject = await getEIP721DomainObject(deployedProxy)
+    registry = deployedProxy;
+    domainObject = await getEIP721DomainObject(registry)
   })
 
 
