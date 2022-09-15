@@ -11,14 +11,12 @@ import {
   changeListOwnerSigned, changeListStatusSigned,
   changeStatusesInListDelegatedSigned,
   changeStatusesInListSigned,
-  generateEIP712Params,
-  getEIP721DomainObject,
   getNonce,
   removeListDelegateSigned,
-  SignedFunction,
   signTypedData
 } from "./utils";
 import {deployProxy} from "@openzeppelin/truffle-upgrades";
+import {generateEIP712Params, getEIP721DomainObject, SignedFunction} from "./utils";
 
 const RevocationRegistry: any = artifacts.require("RevocationRegistry");
 

@@ -127,6 +127,8 @@ export async function signTypedData(signer: string, params: EIP712Params): Promi
   });
 }
 
+
+
 interface EIP712Domain {
   name: string;
   version: string;

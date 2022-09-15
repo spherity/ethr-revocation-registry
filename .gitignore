@@ -12,3 +12,4 @@ test
 .env
 .openzeppelin/unknown-1337.json
 networks/5777.json
+dist
