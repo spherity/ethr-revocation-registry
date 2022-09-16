@@ -1,4 +1,5 @@
 export {
+    EIP712DomainName,
     EIP712ChangeStatusType,
     EIP712ChangeStatusDelegatedType,
     EIP712ChangeStatusInListType,

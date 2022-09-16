@@ -1,5 +1,7 @@
 import {TypedDataField} from "ethers";
 
+export const EIP712DomainName = "Revocation Registry"
+
 export const EIP712ChangeStatusType = {
     ChangeStatus: [
         {name: 'revoked', type: 'bool'} as TypedDataField,
