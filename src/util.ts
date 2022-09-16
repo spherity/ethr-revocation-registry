@@ -24,7 +24,7 @@ export const EIP712ChangeStatusDelegatedType = {
     ]
 }
 
-export const EIP712ChangeStatusInListType = {
+export const EIP712ChangeStatusesInListType = {
     ChangeStatusesInList: [
         {name: 'revoked', type: 'bool[]'},
         {name: 'namespace', type: 'address'},
