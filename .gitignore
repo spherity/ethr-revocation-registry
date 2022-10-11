@@ -5,8 +5,8 @@ coverage/
 coverage.json
 .idea
 build
-types
-types-ts
+/types
+/types-ts
 test
 .DS_STORE
 .env
