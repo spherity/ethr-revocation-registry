@@ -60,6 +60,7 @@
     "@types/chai": "^4.2.11",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^7.0.2",
+    "@types/jest": "^28.0.8",
     "@types/web3": "^1.2.2",
     "chai-as-promised": "^7.1.1",
     "eth-gas-reporter": "^0.2.25",
@@ -72,7 +73,9 @@
     "web3": "^1",
     "web3-core": "^1",
     "web3-eth-contract": "^1",
-    "web3-utils": "^1"
+    "web3-utils": "^1",
+    "jest": "^29.1.2",
+    "ts-jest": "^29.0.3"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.7.3",

@@ -9,3 +9,11 @@ export {
     EIP712RemoveListDelegateType,
     EIP712ChangeListStatusType,
 } from "./util"
+
+export {
+    getDeployments
+} from "./deployments"
+
+export {
+    NetworkDeployment
+} from "./types/NetworkDeployment"
