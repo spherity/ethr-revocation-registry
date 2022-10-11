@@ -28,5 +28,8 @@ export async function getRevocationRegistryDeployment(chainId: number): Promise<
 
 export async function getRevocationRegistryDeploymentAddress(chainId: number): Promise<string> {
   const registry = await getRevocationRegistryDeployment(chainId)
+  if(typeof registry.address === 'undefined' || registry.address !== "") {
+    throw new Error("Contract address has not been found")
+  }
   return registry.address
 }
