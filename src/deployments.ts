@@ -2,7 +2,7 @@ import {NetworkDeployment} from "./types/NetworkDeployment";
 
 const NETWORK_PATH = "../networks/"
 
-export async function getDeployments(chainId: number): Promise<NetworkDeployment[]> {
+export function getDeployments(chainId: number): NetworkDeployment[] {
   try{
     return require(NETWORK_PATH + chainId + ".json")
   } catch(error) {
@@ -10,9 +10,9 @@ export async function getDeployments(chainId: number): Promise<NetworkDeployment
   }
 }
 
-export async function getRevocationRegistryDeployment(chainId: number): Promise<NetworkDeployment> {
+export function getRevocationRegistryDeployment(chainId: number): NetworkDeployment {
   try{
-    const deployments = await getDeployments(chainId)
+    const deployments = getDeployments(chainId)
     if(typeof deployments === 'undefined' || deployments.length === 0) {
       throw new Error(`No deployments found for chainId ${chainId}`)
     }
@@ -26,8 +26,8 @@ export async function getRevocationRegistryDeployment(chainId: number): Promise<
   }
 }
 
-export async function getRevocationRegistryDeploymentAddress(chainId: number): Promise<string> {
-  const registry = await getRevocationRegistryDeployment(chainId)
+export function getRevocationRegistryDeploymentAddress(chainId: number): string {
+  const registry = getRevocationRegistryDeployment(chainId)
   if(typeof registry.address === 'undefined' || registry.address !== "") {
     throw new Error("Contract address has not been found")
   }
