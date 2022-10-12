@@ -28,7 +28,7 @@ export function getRevocationRegistryDeployment(chainId: number): NetworkDeploym
 
 export function getRevocationRegistryDeploymentAddress(chainId: number): string {
   const registry = getRevocationRegistryDeployment(chainId)
-  if(typeof registry.address === 'undefined' || registry.address !== "") {
+  if(typeof registry.address === 'undefined' || registry.address === "") {
     throw new Error("Contract address has not been found")
   }
   return registry.address
