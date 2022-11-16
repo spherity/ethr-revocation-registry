@@ -27,8 +27,6 @@ This repository includes a well-tested reference implementation that implements 
     <img src="img/registry-architecture.jpg"/>
 </div>
 
-<div align="center">
-
 ### Namespace
 
 A namespace is a representation of an Ethereum `address` inside the registry that corresponds to its owners `address`. All revocation lists within a namespace are initially owned by the namespace's owner `address`. All namespaces are already claimed by their corresponding owners.
@@ -53,9 +51,13 @@ An Ethereum `address` that received temporary access to a revocation list in a n
 
 Owners and delegates can provide a signed payload off-band to another `address` (transaction sender) that initiates the Ethereum interaction with the smart contract. This might be helpful for services providing easy-to-use access to the registry.
 
+## Usage in Verifiable Credentials
+
+The usage in Verifiable Credentials is defined in the EthrRevocationRegistry2022 specification found here: https://spherity.github.io/vc-ethr-revocation-registry/. 
+
 ## Interacting with the Registry
 
-Implementers can call all methods of the registry directly with already existing web3 libraries. Alternatively, the Typescript library [Ethereum-Revocation-Registry-Controller](https://github.com/spherity/Ethereum-Revocation-Registry-Controller) can be used as an easy-to-use interface to interact with the registry.
+Implementers can call all methods of the registry directly with already existing web3 libraries. Alternatively, the Typescript library [Ethereum-Revocation-Registry-Controller](https://github.com/spherity/Ethereum-Revocation-Registry-Controller) can be used as an easy-to-use interface to interact with the registry. A plugin for resolving credential states in Veramo can be found here: https://github.com/spherity/ethr-revocation-registry-veramo-plugin
 
 ## Contract Deployments
 
