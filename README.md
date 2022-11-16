@@ -23,6 +23,11 @@ This repository includes a well-tested reference implementation that implements 
 
 ## Concepts
 
+<div align="center">
+    <img src="img/registry-architecture.jpg"/>
+</div>
+
+<div align="center">
 
 ### Namespace
 
