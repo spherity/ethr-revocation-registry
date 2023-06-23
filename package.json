@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "prepare": "npm run types && npm run compile-src",
+    "build": "npm run types && npm run compile-src",
     "init": "docker-compose -f development/docker-compose.yml up -d",
     "types": "npm run compile && npm run generate-types && npm run compile-types",
     "generate-types": "npm run generate-truffle-types && npm run generate-ethers-types",
