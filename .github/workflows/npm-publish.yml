@@ -28,7 +28,7 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm prune --production
+      - run: npm run build
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -43,6 +43,7 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
+      - run: npm run build
       - run: npm run migrate-goerli
         env:
           INFURA_PROJECT_ID: ${{secrets.INFURA_PROJECT_ID}}
