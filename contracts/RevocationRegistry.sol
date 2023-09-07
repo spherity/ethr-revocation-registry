@@ -85,9 +85,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeStatus(revoked, namespace, revocationList, revocationKey);
     }
 
-    function _hashChangeStatus(bool revoked, address namespace, bytes32 revocationList, bytes32 revocationKey, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeStatus(bool revoked, address namespace, bytes32 revocationList, bytes32 revocationKey, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeStatus(bool revoked,address namespace,bytes32 revocationList,bytes32 revocationKey,address signer,uint nonce)"),
+                keccak256("ChangeStatus(bool revoked,address namespace,bytes32 revocationList,bytes32 revocationKey,address signer,uint256 nonce)"),
                 revoked,
                 namespace,
                 revocationList,
@@ -110,9 +110,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeStatus(revoked, namespace, revocationList, revocationKey);
     }
 
-    function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 revocationList, bytes32 revocationKey, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeStatusDelegated(bool revoked, address namespace, bytes32 revocationList, bytes32 revocationKey, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeStatusDelegated(bool revoked,address namespace,bytes32 revocationList,bytes32 revocationKey,address signer,uint nonce)"),
+                keccak256("ChangeStatusDelegated(bool revoked,address namespace,bytes32 revocationList,bytes32 revocationKey,address signer,uint256 nonce)"),
                 revoked,
                 namespace,
                 revocationList,
@@ -142,9 +142,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeStatusesInList(revoked, namespace, revocationList, revocationKeys);
     }
 
-    function _hashChangeStatusesInList(bool[] memory revoked, address namespace, bytes32 revocationList, bytes32[] memory revocationKeys, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeStatusesInList(bool[] memory revoked, address namespace, bytes32 revocationList, bytes32[] memory revocationKeys, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeStatusesInList(bool[] revoked,address namespace,bytes32 revocationList,bytes32[] revocationKeys,address signer,uint nonce)"),
+                keccak256("ChangeStatusesInList(bool[] revoked,address namespace,bytes32 revocationList,bytes32[] revocationKeys,address signer,uint256 nonce)"),
                 keccak256(abi.encodePacked(revoked)),
                 namespace,
                 revocationList,
@@ -167,9 +167,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeStatusesInList(revoked, namespace, revocationList, revocationKeys);
     }
 
-    function _hashChangeStatusesInListDelegated(bool[] memory revoked, address namespace, bytes32 revocationList, bytes32[] memory revocationKeys, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeStatusesInListDelegated(bool[] memory revoked, address namespace, bytes32 revocationList, bytes32[] memory revocationKeys, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeStatusesInListDelegated(bool[] revoked,address namespace,bytes32 revocationList,bytes32[] revocationKeys,address signer,uint nonce)"),
+                keccak256("ChangeStatusesInListDelegated(bool[] revoked,address namespace,bytes32 revocationList,bytes32[] revocationKeys,address signer,uint256 nonce)"),
                 keccak256(abi.encodePacked(revoked)),
                 namespace,
                 revocationList,
@@ -198,9 +198,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeListOwner(namespace, newOwner, revocationList);
     }
 
-    function _hashChangeListOwner(address namespace, address newOwner, bytes32 revocationList, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeListOwner(address namespace, address newOwner, bytes32 revocationList, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeListOwner(address namespace,address newOwner,bytes32 revocationList,address signer,uint nonce)"),
+                keccak256("ChangeListOwner(address namespace,address newOwner,bytes32 revocationList,address signer,uint256 nonce)"),
                 namespace,
                 newOwner,
                 revocationList,
@@ -227,9 +227,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _changeListStatus(revoked, namespace, revocationList);
     }
 
-    function _hashChangeListStatus(bool revoked, address namespace, bytes32 revocationList, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashChangeListStatus(bool revoked, address namespace, bytes32 revocationList, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("ChangeListStatus(bool revoked,address namespace,bytes32 revocationList,address signer,uint nonce)"),
+                keccak256("ChangeListStatus(bool revoked,address namespace,bytes32 revocationList,address signer,uint256 nonce)"),
                 revoked,
                 namespace,
                 revocationList,
@@ -258,9 +258,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _addListDelegate(namespace, delegate, revocationList, validity);
     }
 
-    function _hashAddListDelegate(address namespace, address delegate, bytes32 revocationList, uint validity, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashAddListDelegate(address namespace, address delegate, bytes32 revocationList, uint validity, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("AddListDelegate(address namespace,address delegate,bytes32 revocationList,uint validity,address signer,uint nonce)"),
+                keccak256("AddListDelegate(address namespace,address delegate,bytes32 revocationList,uint validity,address signer,uint256 nonce)"),
                 namespace,
                 delegate,
                 revocationList,
@@ -289,9 +289,9 @@ contract RevocationRegistry is Initializable, EIP712Upgradeable, PausableUpgrade
         _removeListDelegate(namespace, delegate, revocationList);
     }
 
-    function _hashRemoveListDelegate(address namespace, address delegate, bytes32 revocationList, address signer, uint nonce) internal view returns (bytes32) {
+    function _hashRemoveListDelegate(address namespace, address delegate, bytes32 revocationList, address signer, uint256 nonce) internal view returns (bytes32) {
         return _hashTypedDataV4(keccak256(abi.encode(
-                keccak256("RemoveListDelegate(address namespace,address delegate,bytes32 revocationList,address signer,uint nonce)"),
+                keccak256("RemoveListDelegate(address namespace,address delegate,bytes32 revocationList,address signer,uint256 nonce)"),
                 namespace,
                 delegate,
                 revocationList,

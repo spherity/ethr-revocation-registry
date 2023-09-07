@@ -9,7 +9,7 @@ export const EIP712ChangeStatusType = {
         {name: 'revocationList', type: 'bytes32'} as TypedDataField,
         {name: 'revocationKey', type: 'bytes32'} as TypedDataField,
         {name: 'signer', type: 'address'} as TypedDataField,
-        {name: 'nonce', type: 'uint'} as TypedDataField,
+        {name: 'nonce', type: 'uint256'} as TypedDataField,
     ]
 }
 
@@ -20,7 +20,7 @@ export const EIP712ChangeStatusDelegatedType = {
         {name: 'revocationList', type: 'bytes32'} as TypedDataField,
         {name: 'revocationKey', type: 'bytes32'} as TypedDataField,
         {name: 'signer', type: 'address'} as TypedDataField,
-        {name: 'nonce', type: 'uint'} as TypedDataField,
+        {name: 'nonce', type: 'uint256'} as TypedDataField,
     ]
 }
 
@@ -31,7 +31,7 @@ export const EIP712ChangeStatusesInListType = {
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKeys', type: 'bytes32[]'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
 
@@ -42,7 +42,7 @@ export const EIP712ChangeStatusesInListDelegatedType = {
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKeys', type: 'bytes32[]'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
 
@@ -52,7 +52,7 @@ export const EIP712ChangeListOwnerType = {
         {name: 'newOwner', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
 
@@ -61,9 +61,9 @@ export const EIP712AddListDelegateType = {
         {name: 'namespace', type: 'address'},
         {name: 'delegate', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
-        {name: 'validity', type: 'uint'},
+        {name: 'validity', type: 'uint256'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
 
@@ -73,7 +73,7 @@ export const EIP712RemoveListDelegateType = {
         {name: 'delegate', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
 
@@ -83,6 +83,6 @@ export const EIP712ChangeListStatusType = {
         {name: 'namespace', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
     ]
 }
