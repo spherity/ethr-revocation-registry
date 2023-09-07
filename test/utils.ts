@@ -116,7 +116,7 @@ export async function signTypedData(signer: string, params: EIP712Params): Promi
   return new Promise((resolve, reject) => {
     (web3.eth.currentProvider as HttpProvider).send({
       jsonrpc: "2.0",
-      method: 'eth_signTypedData',
+      method: 'eth_signTypedData_v4',
       params: [signer, params],
     }, function (err: any, result: any) {
       if (err) {
@@ -189,7 +189,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKey', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.CHANGE_STATUS_DELEGATED:
@@ -200,7 +200,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKey', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.CHANGE_STATUSES_IN_LIST:
@@ -211,7 +211,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKeys', type: 'bytes32[]'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.CHANGE_STATUSES_IN_LIST_DELEGATED:
@@ -222,7 +222,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'revocationList', type: 'bytes32'},
         {name: 'revocationKeys', type: 'bytes32[]'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.CHANGE_LIST_OWNER:
@@ -232,7 +232,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'newOwner', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.ADD_LIST_DELEGATE:
@@ -243,7 +243,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'revocationList', type: 'bytes32'},
         {name: 'validity', type: 'uint'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.REMOVE_LIST_DELEGATE:
@@ -253,7 +253,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'delegate', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
       break;
     case SignedFunction.CHANGE_LIST_STATUS:
@@ -263,7 +263,7 @@ export function generateEIP712Params(signedFunction: SignedFunction, domainObjec
         {name: 'namespace', type: 'address'},
         {name: 'revocationList', type: 'bytes32'},
         {name: 'signer', type: 'address'},
-        {name: 'nonce', type: 'uint'},
+        {name: 'nonce', type: 'uint256'},
       ]
   }
   return params;
