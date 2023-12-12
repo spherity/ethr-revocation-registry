@@ -85,6 +85,11 @@ module.exports = {
       network_id: 5,       // Goerli's id
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
+    sepolia: {
+      provider: () => new HDWalletProvider(REGISTRY_WALLET_PRIVATE_KEY, `https://sepolia.infura.io/v3/${INFURA_PROJECT_ID}`),
+      network_id: 11155111,       // Sepolia's id
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
     //
     // Useful for private networks
     // private: {
