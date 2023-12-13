@@ -34,10 +34,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
-  deploy-goerli:
+  deploy-sepolia:
     needs: publish-npm
     runs-on: ubuntu-latest
-    environment: goerli-deploy
+    environment: sepolia
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
