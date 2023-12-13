@@ -17,6 +17,7 @@
     "compile-src": "tsc -p tsconfig.src.json --outDir ./dist/",
     "migrate": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate",
     "migrate-goerli": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network goerli",
+    "migrate-sepolia": "tsc -p ./tsconfig.migrate.json --outDir ./migrations && npm run compile && truffle migrate --network sepolia",
     "test": "npm run test:jest && npm run test:truffle",
     "test:truffle": "npx truffle test",
     "test:truffle:meta": "npx truffle test test/meta-transactions.test.ts",
